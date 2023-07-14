@@ -1,5 +1,2 @@
-﻿  Single.cpp
-c:\users\user\documents\visual studio 2015\projects\consoleapplication1\single.cpp(41): warning C4101: 'testStack' :참조되지 않은 지역 변수입니다.
-c:\users\user\documents\visual studio 2015\projects\consoleapplication1\single.cpp(23): warning C4172: 지역 변수 또는 임시: rv의 주소를 반환하고 있습니다.
-  ConsoleApplication1.vcxproj -> C:\Users\user\documents\visual studio 2015\Projects\ConsoleApplication1\x64\Debug\ConsoleApplication1.exe
-  ConsoleApplication1.vcxproj -> C:\Users\user\documents\visual studio 2015\Projects\ConsoleApplication1\x64\Debug\ConsoleApplication1.pdb (Full PDB)
+﻿  ConsoleApplication1.vcxproj -> C:\Users\user\Documents\Visual Studio 2015\Projects\ConsoleApplication1\x64\Debug\ConsoleApplication1.exe
+  ConsoleApplication1.vcxproj -> C:\Users\user\Documents\Visual Studio 2015\Projects\ConsoleApplication1\x64\Debug\ConsoleApplication1.pdb (Full PDB)
