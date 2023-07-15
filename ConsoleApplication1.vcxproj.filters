@@ -16,8 +16,8 @@
     <Filter Include="싱글 구현">
       <UniqueIdentifier>{f4710276-36be-4754-b9ff-c3093add8258}</UniqueIdentifier>
     </Filter>
-    <Filter Include="키워드">
-      <UniqueIdentifier>{9f4c76c0-c324-4ffa-9e4a-e55ab35402fc}</UniqueIdentifier>
+    <Filter Include="테스트">
+      <UniqueIdentifier>{bb15eb8e-5f58-4a1a-ad41-41c4f89a2d96}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -30,10 +30,13 @@
     <ClCompile Include="App.cpp">
       <Filter>분할 구현</Filter>
     </ClCompile>
-    <ClCompile Include="Keyword.cpp">
-      <Filter>키워드</Filter>
+    <ClCompile Include="CallBy.cpp">
+      <Filter>싱글 구현</Filter>
     </ClCompile>
-    <ClCompile Include="Single.cpp">
+    <ClCompile Include="Test.cpp">
+      <Filter>테스트</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
       <Filter>싱글 구현</Filter>
     </ClCompile>
   </ItemGroup>
