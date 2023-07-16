@@ -13,11 +13,11 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="싱글 구현">
-      <UniqueIdentifier>{f4710276-36be-4754-b9ff-c3093add8258}</UniqueIdentifier>
-    </Filter>
     <Filter Include="테스트">
       <UniqueIdentifier>{bb15eb8e-5f58-4a1a-ad41-41c4f89a2d96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="단일 구현">
+      <UniqueIdentifier>{f4710276-36be-4754-b9ff-c3093add8258}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -31,13 +31,13 @@
       <Filter>분할 구현</Filter>
     </ClCompile>
     <ClCompile Include="CallBy.cpp">
-      <Filter>싱글 구현</Filter>
+      <Filter>단일 구현</Filter>
     </ClCompile>
     <ClCompile Include="Test.cpp">
       <Filter>테스트</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp">
-      <Filter>싱글 구현</Filter>
+      <Filter>단일 구현</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,11 +1,14 @@
 // git push - 230716
+// git push - 230717
 
-#include <iostream>
+#include <iostream>	// 입출력
 #include <cstring>	// C 문자열 스타일 (API)
 #include <string>	// C++ 문자열 스타일 (클래스)
+#include <cassert>	// 예외 처리
 
 using namespace std;
 
+// 정적 변수
  int testStatic; // 전역 변수는 0으로 초기화
  void static_test()
  {
@@ -21,7 +24,7 @@ using namespace std;
  }
 
 
- ///////// 구조체 /////////
+ // 구조체
  struct MyType
  {
 	 // 주로 여러 자료형을 묶어 맴버 변수로 사용
@@ -36,10 +39,170 @@ using namespace std;
  };
 
 
+ // 연산자 오버로딩
+ class B {
+	 // A 클래스를 친구로 선언 (A클래스에서 B클래스 private 맴버 변수에 접근할 수 있다)
+	 friend class A;
+
+ private:
+	 int m_i = 2;
+	 double m_d = 2.0;
+	 char m_c = 'A';
+ };
+
+
+ class A {
+ private:
+	 int m_i = 10;
+	 double m_d = 10.0;
+
+ public:
+	 void Aprintf() { printf("m_i: %d\n", m_i); 
+					  printf("m_d: %.2f\n", m_d); }
+
+	 // 연산자 함수
+	 // 앞쪽의 const: B클래스 객체 변경 불가
+	 // 뒷쪽의 const: A클래스 객체 변경 불가
+	 A operator+(const B& other) const
+	 {
+		 A result;
+
+		 // this->m_i = 100; // A클래스 맴버 변수 값 변경
+		 // other.m_i = 200; // B클래스 맴버 변수 값 변경
+
+		 // A와 B를 더한 결과를 result에 할당
+		 result.m_i = this->m_i + other.m_i;
+		 result.m_d = this->m_d + other.m_d;
+		 return result;
+	 }
+ };
+
+
+ // C 스타일 예외 처리
+ int CExHandling(int _num)
+ {
+	 if (_num == 0) { return -1; }
+
+	 return _num;
+ }
+
+
+ // C++ 스타일 예외 처리
+ int CppExHandling(int _num3)
+ {
+	 if (_num3 == 0) { throw runtime_error("runtime_error!"); } // throw -> catch 절로 이동
+
+	 if (_num3 < 0) { throw out_of_range("out_of_range!"); }
+
+	 return _num3;
+ }
+
+
 int main()
 {
-	///////// chapter11:  /////////
+	///////// chapter15: 템플릿 /////////
 
+
+	//return 0; // main 함수에서 문제가 없으면 0을 리턴, 문제가 있으면 다른 값을 리턴
+
+
+	/*
+	///////// chapter14: 예외 처리 /////////
+	// 1. C 스타일 예외처리
+	// 1) 매크로 함수: assert(false);
+	// 2) if / else
+	// 3) 함수 리턴값
+	int num1 = -1, result1 = 0;
+
+	result1 = CExHandling(num1);
+	if (result1 == -1)	{ cout << "error1: " << num1 << endl << endl; }
+	else				{ cout << "result1: " << result1 << endl << endl; }
+
+	// 2. C++ 스타일 예외처리
+	// try-catch 장점: 리턴을 원래 목정성에 맞게 사용
+
+	// 1) try-catch 쉽게 사용하는 법
+	int num2 = -1, result2 = 0;
+
+	try { if (num2 < 0) { throw 0; } }
+	catch (int exceptionValue) {
+		cout << "error2: " << exceptionValue << endl;
+	}
+	cout << "num2: " << num2 << endl << endl;
+
+	// 2) throw, catch 분기하여 사용하는 법
+	// stdexcept: C++ 표준 라이브러리에는 다양한 예외 클래스가 정의되어 있음
+	int num3 = -1, result3 = 0;
+
+	try // 예외가 발생할 수 있는 코드
+	{ result3 = CppExHandling(num3); }
+
+	catch (runtime_error& e)	// runtime_error 예외 처리
+	{ cout << "error3: " << e.what() << endl; }
+	catch (out_of_range& e)	// out_of_range 예외 처리
+	{ cout << "error3: " << e.what() << endl; }
+
+	cout << "result3: " << result3 << endl;
+	///////////////////////////////////////
+	*/
+
+
+	/*
+	///////// chapter13: 연산자 로버로딩 /////////
+	// 연산자 로버로딩:	사용자 자료형 객체간에 연산자를 활용할 수 있는 기능
+	// 연산자 함수:		리턴자료형 operator 연산자()
+	// 스마트 포인터:		원하는 자료형을 가리킬수 있는 포인터를 데이터 맴버로 갖는 객체
+	// friend 클래스:	친구 클래스의 private 맴버 변수에 접근할 수 있다		
+
+	A testA;
+	B testB;
+
+	A result = testA + testB; // + 연산자를 사용하여 더합니다.
+
+	result.Aprintf();
+	///////////////////////////////////////
+	*/
+
+
+	/*
+	///////// chapter12: 다형성 /////////
+	// 다형성이란: 같은 이름, 인자를 갖는 함수를 클래스별로 구분
+	//			  (베이스/파생)ptr -> 객체 -> 가상테이블 -> 함수호출(베이스/파생)
+	// 가상소멸자: 베이스 클래스에서 가상 함수를 사용시 가상소멸자 사용
+
+	// 바인딩:	  함수 호출과 함수 본문을 연결
+	// 정적바인딩: 컴파일 시점 바인딩
+	// 동적바인딩: 런타임 시점 바인딩 (다형성)
+	
+	// 동적자료형 변환
+	// 업캐스트:		Person* ptr1 =  new Student;
+	// 다운캐스트:	Student* ptr2 = dynamic_cast<Student*>(ptr1)
+
+	// 추상클래스:	하나 이상의 "순수가상함수" 포함하는 클래스 (인스턴스 불가!)
+	// 순수가상함수:	선언시 0을 할당, 정의하지 않음
+	//				vertual int getTest() = 0; (파생 클래스에서 순수가상함수 정의)
+	// 클래스 인터페이스:	모든 함수가 순수가상함수 (구현 파일 없음)
+
+	// 다중 상속:	둘 이상의 베이스 클래스를 하나의 파생클래스에서 상속
+	//				classB : vertual public classA
+	//				classC : vertual public classA
+	//				classD : public classB, public classC
+	///////////////////////////////////////
+	*/
+
+
+	/*
+	///////// chapter11: 클래스의 관계 /////////
+	// 상속: classB에서 classA의 멤버 변수를 상속
+	// classA		classB : public classA
+		  
+	// 연관: classA 멤버 변수에서 classB 자료형을 사용
+	// classA		classB
+		  
+	// 종속: classA 맴버 함수에서 매개변수, 리턴값, 지역변수로 classB 자료형 사용
+	// classA		classB
+	///////////////////////////////////////
+	*/
 
 
 	/*
@@ -75,6 +238,7 @@ int main()
 	cout << "문자열 결합: " << str4.append(str5) << endl;
 	cout << "중간에 삽입: " << str4.insert(0,"A") << endl;
 	str4.clear(); // 문자열 제거
+	///////////////////////////////////////
 	*/
 
 
@@ -85,11 +249,12 @@ int main()
 	// & 주소 연산자: 주소 <- & <- 변수
 
 	//////////////////////////////////////
-	// 메모리 영역
-	// 코드 메모리: 프로그램 코드 보유
-	// 정적 메모리: 정적 변수, 전역 변수 보유
-	// 스택 메모리: 지역 변수 , 함수 파라메타 보유
-	// 힙 메로리:   런타임 시점에  객체를 저장 (동적 할당 후 해제 필요!)
+	// 메모리 영역의 종류
+	// 코드 메모리: 프로그램 명령어가 올라가는 영역
+	// 정적 메모리: 정적 변수, 전역 변수 저장하는 영역
+	// 스택 메모리: 지역 변수 , 매개변수, 리턴주소를 추적 (선입 후출 구조)
+	// 힙 메모리:   함수의 수명보다 오래 유지되어야 하는 정보를 저장하는 영역 (런타임 시점, 동적 할당 후 해제 필요!	)
+	//				이미지등 사이즈가 클 경우 무조건 힙 메모리에 올려야 한다
 	////////////////////////////////////// 
 
 	// 1) 포인터 자료형: 주소를 받는다
@@ -136,6 +301,7 @@ int main()
 	}
 	
 	delete[] pNewArr;
+	///////////////////////////////////////
 	*/
 
 
@@ -173,6 +339,7 @@ int main()
 		}
 		printf("\n");
 	}
+	///////////////////////////////////////
 	*/
 
 
@@ -186,6 +353,7 @@ int main()
 	
 	printf("%d\n", ptr->i);
 	printf("%d\n", ptr->s);
+	///////////////////////////////////////
 	*/
 
 
@@ -198,6 +366,7 @@ int main()
 	{
 		static_test();
 	}
+	///////////////////////////////////////
 	*/
 
 
@@ -215,6 +384,7 @@ int main()
 			count = false;
 			continue;
 	}
+	///////////////////////////////////////
 	*/
 
 
@@ -228,6 +398,7 @@ int main()
 		cin >> num;
 
 	} while (num < 0 || num > 100); // 0보다 작거나 100보다 크다
+	///////////////////////////////////////
 	*/
 
 
@@ -241,6 +412,7 @@ int main()
 		}
 		printf("\n");
 	}
+	///////////////////////////////////////
 	*/
 
 
@@ -258,6 +430,7 @@ int main()
 	{
 		count++;
 	}
+	///////////////////////////////////////
 	*/
 
 	
@@ -285,6 +458,7 @@ int main()
 
 	default: cout << "잘못 입력" << endl;
 	}
+	///////////////////////////////////////
 	*/
 
 
@@ -297,5 +471,6 @@ int main()
 
 	printf("%c\n", first);
 	printf("%c\n", second);
+	///////////////////////////////////////
 	*/
 }
