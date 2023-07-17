@@ -107,7 +107,7 @@ int main()
 	//return 0; // main 함수에서 문제가 없으면 0을 리턴, 문제가 있으면 다른 값을 리턴
 
 
-	/*
+	
 	///////// chapter14: 예외 처리 /////////
 	// 1. C 스타일 예외처리
 	// 1) 매크로 함수: assert(false);
@@ -123,29 +123,27 @@ int main()
 	// try-catch 장점: 리턴을 원래 목정성에 맞게 사용
 
 	// 1) try-catch 쉽게 사용하는 법
-	int num2 = -1, result2 = 0;
+	int num2 = -1;
 
-	try { if (num2 < 0) { throw 0; } }
+	try { if (num2 < 0) { throw -1; } }
+
 	catch (int exceptionValue) {
-		cout << "error2: " << exceptionValue << endl;
+		cout << "error2: " << exceptionValue << endl << endl;
 	}
-	cout << "num2: " << num2 << endl << endl;
 
 	// 2) throw, catch 분기하여 사용하는 법
 	// stdexcept: C++ 표준 라이브러리에는 다양한 예외 클래스가 정의되어 있음
-	int num3 = -1, result3 = 0;
+	int num3 = -1;
 
 	try // 예외가 발생할 수 있는 코드
-	{ result3 = CppExHandling(num3); }
+	{ CppExHandling(num3); }
 
 	catch (runtime_error& e)	// runtime_error 예외 처리
 	{ cout << "error3: " << e.what() << endl; }
 	catch (out_of_range& e)	// out_of_range 예외 처리
 	{ cout << "error3: " << e.what() << endl; }
-
-	cout << "result3: " << result3 << endl;
 	///////////////////////////////////////
-	*/
+	
 
 
 	/*
