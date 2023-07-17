@@ -39,12 +39,18 @@
     <ClCompile Include="Main.cpp">
       <Filter>단일 구현</Filter>
     </ClCompile>
+    <ClCompile Include="Templ.cpp">
+      <Filter>분할 구현</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Parent.h">
       <Filter>분할 헤더</Filter>
     </ClInclude>
     <ClInclude Include="Child.h">
+      <Filter>분할 헤더</Filter>
+    </ClInclude>
+    <ClInclude Include="Templ.h">
       <Filter>분할 헤더</Filter>
     </ClInclude>
   </ItemGroup>

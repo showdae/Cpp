@@ -5,8 +5,8 @@ int CParent::changeCount = 0; // 정적 전역 변수 초기화
 
 CParent::CParent()
 	:m_firstName("park") // 초기화 리스트
-	,m_lastName("dongha")
-	,m_age(58)
+	,m_lastName("father")
+	,m_age(50)
 {
 }
 

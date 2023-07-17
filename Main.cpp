@@ -1,5 +1,6 @@
 // git push - 23071717
-
+// git push - 23071804
+ 
 #include <iostream>	// 입출력
 #include <cstring>	// C 문자열 스타일 (API)
 #include <string>	// C++ 문자열 스타일 (클래스)
@@ -99,7 +100,7 @@ using namespace std;
 
  // 템플릿 함수
  template <typename T>
- T TempleFunc(T _first, T _second)
+ T TempleFunc(const T& _first, const T& _second)
  {
 	 if (_first < _second)
 	 {
@@ -109,19 +110,95 @@ using namespace std;
  }
 
 
+ // 템플릿 특수화: 기존 템플릿 함수에서 기능을 추가 (모든 T를 같은 자료형으로 변경)
+ template <>
+ const char* TempleFunc(const char* const& _first, const char* const& _second)
+ {
+	 // strcmp (문자열 비교): 같은면 0을 반환, 첫번째 문자열이 작으면 음수, 크면 양수 반환
+	 // C 스타일 문자열은 < 연산자 오버로딩되어 있지 않음 -> strcmp 함수로 대체
+	 if (strcmp(_first, _second) < 0)
+	 {
+		 return _first;
+	 }
+	 return _second;
+ }
+
+
+#include <iomanip> // 포맷 조작자를 사용하기 위한 헤더 파일
+ // 템플릿 함수 변형 (배열)
+ // N 값은 컴파일러에 의해 "추론"되거나 "명시적"으로 전달 받음
+ template <typename T, int N>
+ void TempleArr(T (&_arr) [N])
+ {
+	 for (int i = 0; i < N; i++)
+	 {
+		 cout << fixed << setprecision(1) << _arr[i] << " ";
+	 }
+	 cout << endl << endl;
+ }
+
+
 int main()
 {
-	///////// chapter15: 템플릿 /////////
+	///////// chapter16: 입출력 스트림 /////////
 
+
+
+
+
+	return 0; // main 함수에서 문제가 없으면 0을 리턴, 문제가 있으면 다른 값을 리턴
+	///////////////////////////////////////
+
+
+
+	/*
+	///////// chapter15: 템플릿 /////////
+	// 템플릿: 코드를 처리만 작성하고, 컴파일될때 자료형에 해당하는 함수를 만들어낸다
+	// 템플릿 함수로 오버로딩이 가능
+
+	// 1. 템플릿 함수
 	int iFirst = 10;	int iSecond = 1;
 	float fFirst = 10;	float fSecond = 1;
 	char cFirst = 'A';	char cSecond = 'B';
 
+	cout << "템플릿 함수" << endl;
 	cout << TempleFunc(iFirst, iSecond) << endl;
 	cout << TempleFunc(fFirst, fSecond) << endl;
 	cout << TempleFunc(cFirst, cSecond) << endl;
+	//cout << TempleFunc(10, 1.12) << endl;				// 컴파일 error: 자료형을 복합적으로 쓸 수 없다
+	cout << TempleFunc<int>(10, 1.12) << endl << endl;	// 명시적 형변환
 
-	return 0; // main 함수에서 문제가 없으면 0을 리턴, 문제가 있으면 다른 값을 리턴
+	// 2. 템플릿 함수 변형 (배열)
+	int iArr[3]		= { 1, 2, 3 };
+	double dArr[3]	= { 1.0, 2.0, 3.0 };
+
+	cout << "템플릿 함수 변형" << endl;
+	//TempleArr(iArr); // N값을 암묵적으로 전달
+	//TempleArr(dArr);
+
+	TempleArr<int, 3>(iArr); // N값을 명시적으로 전달
+	TempleArr<double, 3>(dArr);
+
+	// 3. 템플릿 특수화
+	string str1 = "aaa"; // C++ 스타일
+	string str2 = "bbb";
+	const char* s1 = "ccc"; // C 스타일
+	const char* s2 = "ddd";
+
+	cout << "특수화" << endl;
+	cout << TempleFunc(str1, str2) << endl;
+	cout << TempleFunc(s1, s2) << endl;		// 특수화 함수 호출
+
+	// 4. 템플릿 클래스
+	// Templ 클래스 참조
+
+	// 5. 분산된 템플릿의 컴파일
+	// 포함 컴파일: h -> cpp -> app(include cpp) -> 컴파일러 -> exe
+	// 분할 컴파일: 모든 템플릿 함수/클래스를 export 키워드를 붙여준다
+	//			   컴파일러가 export 키워드를 지원하지 않으면 포함 컴파일을 사용해야 한다 (구버젼 지원 X)
+	//			   export template <typename T> 
+	///////////////////////////////////////
+	*/
 
 
 	/*
@@ -148,9 +225,9 @@ int main()
 
 	// 3. 표준 예외 클래스
 	// stdexcept: C++ 표준 라이브러리에는 다양한 예외 클래스가 정의되어 있음
-	domain_error; length_error; invalid_argument; out_of_range;
-	runtime_error; overflow_error; underflow_error; range_error;
-
+	// logic_error; : domain_error; out_of_range; length_error; invalid_argument;
+	// runtime_error; : overflow_error; underflow_error; range_error;
+	
 	int num3 = -1;
 
 	try // 예외가 발생할 수 있는 코드

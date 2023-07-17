@@ -3,8 +3,8 @@
 int CChild::changeCount = 0; // 정적 변수 초기화
 
 CChild::CChild()
-	: m_lastName("daesung")
-	, m_age(35)
+	: m_lastName("son")
+	, m_age(20)
 {
 }
 
