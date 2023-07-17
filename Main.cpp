@@ -86,7 +86,7 @@ using namespace std;
  }
 
 
- // C++ 스타일 예외 처리
+ // try-catch (throw)
  int CppExHandling(int _num3)
  {
 	 if (_num3 == 0) { throw runtime_error("runtime_error!"); } // throw -> catch 절로 이동
@@ -97,15 +97,34 @@ using namespace std;
  }
 
 
+ // 템플릿 함수
+ template <typename T>
+ T TempleFunc(T _first, T _second)
+ {
+	 if (_first < _second)
+	 {
+		 return _first;
+	 }
+	 return _second;
+ }
+
+
 int main()
 {
 	///////// chapter15: 템플릿 /////////
 
+	int iFirst = 10;	int iSecond = 1;
+	float fFirst = 10;	float fSecond = 1;
+	char cFirst = 'A';	char cSecond = 'B';
 
-	//return 0; // main 함수에서 문제가 없으면 0을 리턴, 문제가 있으면 다른 값을 리턴
+	cout << TempleFunc(iFirst, iSecond) << endl;
+	cout << TempleFunc(fFirst, fSecond) << endl;
+	cout << TempleFunc(cFirst, cSecond) << endl;
+
+	return 0; // main 함수에서 문제가 없으면 0을 리턴, 문제가 있으면 다른 값을 리턴
 
 
-	
+	/*
 	///////// chapter14: 예외 처리 /////////
 	// 1. C 스타일 예외처리
 	// 1) 매크로 함수: assert(false);
@@ -119,8 +138,6 @@ int main()
 
 	// 2. C++ 스타일 예외처리
 	// try-catch 장점: 리턴을 원래 목정성에 맞게 사용
-
-	// 1) try-catch 쉽게 사용하는 법
 	int num2 = -1;
 
 	try { if (num2 < 0) { throw -1; } }
@@ -129,8 +146,11 @@ int main()
 		cout << "error2: " << exceptionValue << endl << endl;
 	}
 
-	// 2) throw, catch 분기하여 사용하는 법
+	// 3. 표준 예외 클래스
 	// stdexcept: C++ 표준 라이브러리에는 다양한 예외 클래스가 정의되어 있음
+	domain_error; length_error; invalid_argument; out_of_range;
+	runtime_error; overflow_error; underflow_error; range_error;
+
 	int num3 = -1;
 
 	try // 예외가 발생할 수 있는 코드
@@ -141,7 +161,7 @@ int main()
 	catch (out_of_range& e)	// out_of_range 예외 처리
 	{ cout << "error3: " << e.what() << endl; }
 	///////////////////////////////////////
-	
+	*/
 
 
 	/*
