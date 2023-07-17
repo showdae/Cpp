@@ -1,4 +1,5 @@
 // git push - 23071717
+int a;
 
 #include <iostream>	// 입출력
 #include <cstring>	// C 문자열 스타일 (API)
