@@ -1,6 +1,3 @@
-// git push - 230716
-// git push - 230717
-// git test
 // git push - 23071717
 
 #include <iostream>	// ÀÔÃâ·Â
