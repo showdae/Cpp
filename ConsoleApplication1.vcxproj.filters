@@ -42,6 +42,12 @@
     <ClCompile Include="Templ.cpp">
       <Filter>분할 구현</Filter>
     </ClCompile>
+    <ClCompile Include="sort.cpp">
+      <Filter>단일 구현</Filter>
+    </ClCompile>
+    <ClCompile Include="Binary_Search.cpp">
+      <Filter>단일 구현</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Parent.h">

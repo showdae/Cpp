@@ -1,6 +1,7 @@
 // git push - 23071717
 // git push - 23071804
 // git push - 23071906
+// git push - 23072104
  
 // 표준 라이브러리
 #include <iostream>	// 콘솔 스트림
@@ -142,8 +143,53 @@ using namespace std;
  }
 
 
+ // 재귀 (펙토리얼)
+ int factorial(int n)
+ {
+	 if (n <= 1) // 베이스 케이스 (탈출 조건)
+	 { return 1; } 
+	 return n * factorial(n - 1); // 제너럴 케이스 (처리)
+ }
+
+
+ // 재귀 (피보나치 수열)
+ long long fib(int n)
+ {
+ 	 if (n == 0 || n == 1)
+	 { return n; }
+	 return fib(n - 1) + fib(n - 2); // 두 함수의 리턴값을 더해서 이전 스택 함수 파라메타로 사용
+ }
+
+
 int main()
 {
+	///////// chapter18: 자료 구조 /////////
+
+	///////////////////////////////////////
+
+	/*
+	///////// chapter17: 재귀 함수 /////////
+	// 재귀: 함수 자체를 n-1번 호출해서 반복
+	// 제너럴 케이스: 처리를 하는 함수 호출
+	// 베이스 케이스: 반복을 종료하기 위한 함수 호출
+	// 리턴형 재귀 함수: 각가의 함수를 호출해서 어떤값을 리턴하기 전까지 별로의 정보를 저장
+	// 1) 펙토리얼 문제
+	cout << "펙토리얼" << endl;
+	cout << factorial(4) << endl << endl;
+
+	// 2) 피보나치 수열 문제
+	cout << "0~10 범위의 피보나치 수열" << endl;
+	for (int i = 0; i <= 10; i++)
+	{ cout << "fib(" << i  << ") :" << fib(i) << endl; }
+
+	// 3) 정렬(재귀): Sort.cpp 파일 참조
+
+	// 4) 탐색(재귀): Binary_Search.cpp 파일 참조
+	///////////////////////////////////////
+	*/
+
+
+	/*
 	///////// chapter16: 입출력 스트림 /////////
 	// 스트림이란: 프로그램과 데이터소스 or 데이터싱크의 연결 다리(자동 변환)
 	// 데이터소스: 키보드, 파일, 문자열
@@ -206,7 +252,7 @@ int main()
 	inStream.close(); // 파일 연결 끊기
 
 	///// 3. 이진 파일 스트림 (이진데이터 -> 이진데이터) /////
-	// 텍스트 파일이 아닌 데이터를 처리할때 사용 (이미지 파일..._
+	// 텍스트 파일이 아닌 데이터를 처리할때 사용 (이미지 파일...)
 	int iNum1 = 12345; double dNim1 = 12.345;
 
 	ofstream binaryOut;
@@ -223,7 +269,7 @@ int main()
 	int iNum2; double dNum2;
 
 	ifstream binaryIn;
-	binaryIn.open("test2.txt", ios::in, ios::binary); // 엵기모드: in 입력목적, binary 이진
+	binaryIn.open("test2.txt", ios::in, ios::binary); // 엵기모드: in 읽기목적, binary 이진
 	if (!binaryIn.is_open())
 	{ cout << "파일 읽기 실패" << endl; }
 
@@ -288,11 +334,8 @@ int main()
 	cout << "b2: " << boolalpha << b2 << endl;
 	cout << "d2: " << showpoint << right << fixed << setw(16) << setprecision(2)
 		 << setfill('*') << d2 << endl;
-
-
-
-	return 0; // main 함수에서 문제가 없으면 0을 리턴, 문제가 있으면 다른 값을 리턴
 	///////////////////////////////////////
+	*/
 
 
 	/*
@@ -598,9 +641,9 @@ int main()
 
 	/*
 	///////// chapter6: 정적 변수 /////////
-	// 함수 호출 방법: CallBy.cpp 파일 참조
-
-	// 정적 변수
+	// 1) 함수 호출 방법: CallBy.cpp 파일 참조
+	
+	// 2) 정적 변수
 	for (int i = 0; i < 5; i++)
 	{
 		static_test();
