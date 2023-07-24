@@ -19,6 +19,9 @@
     <Filter Include="단일 구현">
       <UniqueIdentifier>{f4710276-36be-4754-b9ff-c3093add8258}</UniqueIdentifier>
     </Filter>
+    <Filter Include="자료 구조">
+      <UniqueIdentifier>{afb290ce-c68e-4334-b4f0-9012d8d787da}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Parent.cpp">
@@ -27,26 +30,41 @@
     <ClCompile Include="Child.cpp">
       <Filter>분할 구현</Filter>
     </ClCompile>
-    <ClCompile Include="App.cpp">
-      <Filter>분할 구현</Filter>
-    </ClCompile>
     <ClCompile Include="CallBy.cpp">
       <Filter>단일 구현</Filter>
     </ClCompile>
     <ClCompile Include="Test.cpp">
       <Filter>테스트</Filter>
     </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>단일 구현</Filter>
-    </ClCompile>
     <ClCompile Include="Templ.cpp">
       <Filter>분할 구현</Filter>
     </ClCompile>
-    <ClCompile Include="sort.cpp">
-      <Filter>단일 구현</Filter>
-    </ClCompile>
     <ClCompile Include="Binary_Search.cpp">
       <Filter>단일 구현</Filter>
+    </ClCompile>
+    <ClCompile Include="Sort.cpp">
+      <Filter>단일 구현</Filter>
+    </ClCompile>
+    <ClCompile Include="List.cpp">
+      <Filter>자료 구조</Filter>
+    </ClCompile>
+    <ClCompile Include="Stack.cpp">
+      <Filter>자료 구조</Filter>
+    </ClCompile>
+    <ClCompile Include="Queue.cpp">
+      <Filter>자료 구조</Filter>
+    </ClCompile>
+    <ClCompile Include="Binary_Search_Tree.cpp">
+      <Filter>자료 구조</Filter>
+    </ClCompile>
+    <ClCompile Include="Data_Struct_Main.cpp">
+      <Filter>자료 구조</Filter>
+    </ClCompile>
+    <ClCompile Include="Single_Main.cpp">
+      <Filter>단일 구현</Filter>
+    </ClCompile>
+    <ClCompile Include="App_Main.cpp">
+      <Filter>분할 구현</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -58,6 +76,18 @@
     </ClInclude>
     <ClInclude Include="Templ.h">
       <Filter>분할 헤더</Filter>
+    </ClInclude>
+    <ClInclude Include="List.h">
+      <Filter>자료 구조</Filter>
+    </ClInclude>
+    <ClInclude Include="Stack.h">
+      <Filter>자료 구조</Filter>
+    </ClInclude>
+    <ClInclude Include="Queue.h">
+      <Filter>자료 구조</Filter>
+    </ClInclude>
+    <ClInclude Include="Binary_Search_Tree.h">
+      <Filter>자료 구조</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
