@@ -1,4 +1,1 @@
-﻿  Data_Struct_Main.cpp
-c:\users\showd\onedrive\문서\visual studio 2015\projects\cpp\list.cpp(107): warning C4715: 'List<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >::get': 모든 제어 경로에서 값을 반환하지는 않습니다.
-  ConsoleApplication1.vcxproj -> C:\Users\showd\OneDrive\문서\Visual Studio 2015\Projects\Cpp\x64\Debug\ConsoleApplication1.exe
-  ConsoleApplication1.vcxproj -> C:\Users\showd\OneDrive\문서\Visual Studio 2015\Projects\Cpp\x64\Debug\ConsoleApplication1.pdb (Full PDB)
+﻿

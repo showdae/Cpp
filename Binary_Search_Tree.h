@@ -8,7 +8,7 @@
 #include <cassert>
 using namespace std;
 
-// Node 구조체 정의
+// Node 템플릿 구조체 정의
 template<class T>
 struct TreeNode
 {
@@ -17,7 +17,7 @@ struct TreeNode
 	TreeNode<T>* right;
 };
 
-// BinarySearchTree 클래스 정의
+// BinarySearchTree 템플릿 클래스 정의
 template<class T>
 class BinarySearchTree
 {
@@ -26,23 +26,22 @@ private:
 	int count;
 	TreeNode<T>* makeNode(const T& value);
 	// 헬퍼 함수란: 재귀 함수 (일반 함수에서 호출 받음)
-	void destroy(TreeNode <T>* ptr);						// 헬퍼 함수 (post-order)
-	void insert(const T& value, TreeNode <T>*& ptr);		// 헬퍼 함수 (pre-order)
-	void inorder(TreeNode <T>* ptr) const;					// 헬퍼 함수
-	void preorder(TreeNode <T>* ptr) const;					// 헬퍼 함수
-	void postorder(TreeNode <T>* ptr) const;				// 헬퍼 함수
-	bool search(const T& value, TreeNode <T>* ptr) const;	// 헬퍼 함수
+	void destroy(TreeNode <T>* ptr);						// 제거 (post-order)
+	void insert(const T& value, TreeNode <T>*& ptr);		// 삽입 (pre-order)
+	void inorder(TreeNode <T>* ptr) const;					// 출력 (in-order)
+	void preorder(TreeNode <T>* ptr) const;
+	void postorder(TreeNode <T>* ptr) const;
+	bool search(const T& value, TreeNode <T>* ptr) const;
 
 public:
 	BinarySearchTree();
 	~BinarySearchTree();
-	// 일반 함수: 쉽게 사용할 수 있게 매개변수를 최소한으로만 갖고 있음(헬퍼 함수 호출)
-	void insert(const T& value);							// 일반 함수
-	//void erase(const T& value); // 함수 정의 없음
-	bool search(const T& value) const;						// 일반 함수
-	void inorder() const;									// 일반 함수
-	void preorder() const;									// 일반 함수
-	void postorder() const;									// 일반 함수
+	// 맴버 함수: 쉽게 사용할 수 있게 매개변수를 최소한으로 받음 (내부에서 주소 인자 추가하여 헬퍼 함수 호출)
+	void insert(const T& value);
+	bool search(const T& value) const;
+	void inorder() const;
+	void preorder() const;
+	void postorder() const;
 	int size() const;
 	bool empty() const;
 };

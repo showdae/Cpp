@@ -22,6 +22,9 @@
     <Filter Include="자료 구조">
       <UniqueIdentifier>{afb290ce-c68e-4334-b4f0-9012d8d787da}</UniqueIdentifier>
     </Filter>
+    <Filter Include="STL">
+      <UniqueIdentifier>{f8d89938-b427-4607-a9ef-e323292af18a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Parent.cpp">
@@ -57,14 +60,17 @@
     <ClCompile Include="Binary_Search_Tree.cpp">
       <Filter>자료 구조</Filter>
     </ClCompile>
-    <ClCompile Include="Data_Struct_Main.cpp">
-      <Filter>자료 구조</Filter>
-    </ClCompile>
-    <ClCompile Include="Single_Main.cpp">
+    <ClCompile Include="Main_Single.cpp">
       <Filter>단일 구현</Filter>
     </ClCompile>
-    <ClCompile Include="App_Main.cpp">
+    <ClCompile Include="Main_App.cpp">
       <Filter>분할 구현</Filter>
+    </ClCompile>
+    <ClCompile Include="Main_Data_Struct.cpp">
+      <Filter>자료 구조</Filter>
+    </ClCompile>
+    <ClCompile Include="Main_STL.cpp">
+      <Filter>STL</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

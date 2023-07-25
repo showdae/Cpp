@@ -24,7 +24,7 @@ BinarySearchTree<T>::~BinarySearchTree()
 template <class T>
 void BinarySearchTree<T>::insert(const T& value)
 {
-	insert(value, root);
+	insert(value, root); // 헬퍼 함수 호출
 	count++;
 }
 
@@ -39,7 +39,8 @@ bool BinarySearchTree<T>::search(const T& value) const
 template <class T>
 void BinarySearchTree<T>::preorder() const
 {
-	preorder(root);
+	// 모든 order는 루트 전달
+	preorder(root); // 헬퍼 함수 호출
 }
 
 // in-order 순회
@@ -94,11 +95,11 @@ void BinarySearchTree<T>::insert(const T& value, TreeNode <T>*& ptr)
 	}
 	else if (value < ptr->data)
 	{
-		insert(value, ptr->left);
+		insert(value, ptr->left); // 재귀
 	}
 	else
 	{
-		insert(value, ptr->right);
+		insert(value, ptr->right); // 재귀
 	}
 }
 
@@ -110,9 +111,10 @@ void BinarySearchTree<T>::preorder(TreeNode<T>* ptr) const
 	{
 		return;
 	}
+	// 실행 순서에 의해서 order가 결정 (pre, in, post)
 	cout << ptr->data << endl;
-	preorder(ptr->left);
-	preorder(ptr->right);
+	preorder(ptr->left);	// 재귀
+	preorder(ptr->right);	// 재귀
 }
 
 // inorder 함수에서 활용하는 헬퍼 함수
@@ -124,7 +126,9 @@ void BinarySearchTree<T>::inorder(TreeNode<T>* ptr) const
 		return;
 	}
 	inorder(ptr->left);
+
 	cout << ptr->data << endl;
+
 	inorder(ptr->right);
 }
 
@@ -145,32 +149,27 @@ void BinarySearchTree<T>::postorder(TreeNode <T>* ptr) const
 template<typename T>
 bool BinarySearchTree<T>::search(const T& value, TreeNode<T>* ptr) const
 {
-	if (!ptr)
-	{
-		return false;
-	}
-	else if (ptr->data == value)
-	{
-		return true;
-	}
-	else if (value < ptr->data)
-	{
-		return search(value, ptr->left);
-	}
+	if (!ptr) // null이면
+	{ return false; }
+
+	else if (value == ptr->data) // 인자와 같으면
+	{ return true; }
+
+	else if (value < ptr->data) // 인자가 작으면
+	{ return search(value, ptr->left); } // 재귀 (왼쪽 주소로 호출)
+
 	else
-	{
-		return search(value, ptr->right);
-	}
+	{ return search(value, ptr->right); } // 재귀 (오른쪽 주소로 호출)
 }
 
 // makeNode 함수에서 활용하는 헬퍼 함수
 template<typename T>
 TreeNode<T>* BinarySearchTree<T>::makeNode(const T& value)
 {
-	TreeNode<T>* temp = new TreeNode<T>;
+	TreeNode<T>* temp = new TreeNode<T>; // 동적 할당
 	temp->data = value;
-	temp->left = 0;
-	temp->right = 0;
+	temp->left = nullptr;
+	temp->right = nullptr;
 	return temp;
 }
 #endif
