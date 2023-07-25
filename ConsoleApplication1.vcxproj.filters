@@ -48,9 +48,6 @@
     <ClCompile Include="Sort.cpp">
       <Filter>단일 구현</Filter>
     </ClCompile>
-    <ClCompile Include="List.cpp">
-      <Filter>자료 구조</Filter>
-    </ClCompile>
     <ClCompile Include="Stack.cpp">
       <Filter>자료 구조</Filter>
     </ClCompile>
@@ -72,6 +69,12 @@
     <ClCompile Include="Main_STL.cpp">
       <Filter>STL</Filter>
     </ClCompile>
+    <ClCompile Include="Singly_List.cpp">
+      <Filter>자료 구조</Filter>
+    </ClCompile>
+    <ClCompile Include="Doubly_List_STL.cpp">
+      <Filter>STL</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Parent.h">
@@ -83,9 +86,6 @@
     <ClInclude Include="Templ.h">
       <Filter>분할 헤더</Filter>
     </ClInclude>
-    <ClInclude Include="List.h">
-      <Filter>자료 구조</Filter>
-    </ClInclude>
     <ClInclude Include="Stack.h">
       <Filter>자료 구조</Filter>
     </ClInclude>
@@ -94,6 +94,12 @@
     </ClInclude>
     <ClInclude Include="Binary_Search_Tree.h">
       <Filter>자료 구조</Filter>
+    </ClInclude>
+    <ClInclude Include="Singly_List.h">
+      <Filter>자료 구조</Filter>
+    </ClInclude>
+    <ClInclude Include="Doubly_List_STL.h">
+      <Filter>STL</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

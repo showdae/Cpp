@@ -5,7 +5,7 @@
 **************************************************************/
 #ifndef QUEUE_H
 #define QUEUE_H
-#include "list.cpp"
+#include "Singly_List.cpp"
 
 template<typename T>
 class Queue

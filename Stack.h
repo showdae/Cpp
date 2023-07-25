@@ -5,7 +5,7 @@
 **************************************************************/
 #ifndef STACK_H
 #define STACK_H
-#include "list.cpp"	// 단일 링크드 리스트 활용
+#include "Singly_List.cpp"	// 단일 링크드 리스트 활용
 
 // Stack 클래스 정의(List 클래스를 복합으로 포함)
 template<typename T>

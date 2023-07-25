@@ -1,11 +1,11 @@
 /**************************************************************
 * List 클래스를 테스트하는 애플리케이션 파일                 *
 **************************************************************/
-#include <Windows.h>	// sleep() 헤더
+#include <Windows.h>				// sleep() 헤더
 #include <string>
-#include "List.cpp"		// 단일 연결 리스트
-#include "stack.cpp"	// 스택
-#include "queue.cpp"	// 큐
+#include "Singly_List.cpp"			// 단일 연결 리스트
+#include "stack.cpp"				// 스택
+#include "queue.cpp"				// 큐
 #include "Binary_Search_Tree.cpp"	// 이진 탐색 트리
 
 int main()
@@ -42,6 +42,8 @@ int main()
 	// 노드를 제거한 이후에 리스트의 크기 출력
 	cout << "리스트 크기 확인하기" << endl;
 	cout << "리스트의 크기: " << list.size() << endl << endl;
+	///////////////////////////////////////
+
 
 	///// 2. 스택 (선형) /////
 	// 후입선출 자료 구조!
@@ -67,6 +69,8 @@ int main()
 
 	// 스택의 크기를 다시 확인
 	cout << "스택의 크기: " << stack.size() << endl << endl;
+	///////////////////////////////////////
+
 
 	///// 3. 큐 (선형) /////
 	// 선입선출 자료구조!
@@ -95,6 +99,8 @@ int main()
 	cout << "front(): " << queue.front() << endl;
 	cout << "back(): " << queue.back() << endl << endl;
 	Sleep(100); // 슬립 안하면 콘솔 출력이 비정상적임
+	///////////////////////////////////////
+
 
 	///// 4. 이진 탐색 트리 (비선형) /////
 	// 트리에 있는 각각의 노드는 최대 두개의 노드와 연결, 데이터 중첩 불가
@@ -136,6 +142,7 @@ int main()
 	cout << "탐색: " << endl;
 	cout << "search('70') = " << boolalpha << bst.search(70) << endl;
 	cout << "search('100') = " << boolalpha << bst.search(100) << endl;
+	///////////////////////////////////////
 
 	return 0;	// 소멸자
 }

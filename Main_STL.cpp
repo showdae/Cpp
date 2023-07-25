@@ -1,13 +1,20 @@
+// 표준 라이브러리 헤더
 #include <iostream>
 #include <iomanip>
 #include <string>
+
+// STL 시퀀스 컨테이너 헤더
 #include <vector>
-#include <deque>	// 덱
+#include <deque> // 덱
+#include <list>
+
+// 분할 구현 헤더
+#include "Doubly_List_STL.h"
 
 using namespace std;
 
-// 전역 print 함수
-void print(deque<string> deq)
+// 전역 함수
+void myPrint(deque<string> deq)
 {
 	for (int i = 0; i < deq.size(); i++)
 	{ cout << deq.at(i) << "  "; }
@@ -42,13 +49,13 @@ int main()
 	2. 컨테이너
 	 1) 시퀀스 컨테이너: 요소를 저장하고, 찿는 순서를 제어할 수 있는 컬렉션(객체의 모음)
 	  - 크기/용적, 접근, 반복자(기본/역), 삽입, 삭제, 정렬, 스왑 맴버 함수 제공
-	  - vector(동적 배열):	일반적으로 많이 사용함
-							장점: 컨테이너 뒤에 빠른 삽입, 제거 및 빠른 접근
-	 						단점: 컨테이너 앞과 중간에 느린 추가, 제거
-	  - deque(동적 배열):	덱은 목록 내부의 요소를 회전할때 사용
-							장점: 컨테이너 앞/뒤로 빠른 추가, 제거 (push_front() 사용 가능)
-							단점: 앞쪽에 여유 메모리를 할당하기 때문에 메모리를 많이 차지함
-	  - list(이중 연결 리스트):	
+	  - vector(동적 배열):		장점:	컨테이너 뒤에 빠른 삽입, 제거 및 빠른 접근
+	 							단점:	컨테이너 앞과 중간에 느린 추가, 제거
+	  - deque(동적 배열):		장점:	컨테이너 앞/뒤로 빠른 추가, 제거 (push_front() 사용 가능)
+								단점:	앞쪽에 여유 메모리를 할당하기 때문에 메모리를 많이 차지함
+	  - list(이중 연결 리스트):	장점:	컨테이너 원하는 위치에 빠른 삽입과 삭제, sort() 함수 지원
+								단점:	양방향 반복자만 접근 가능 (인덱스 또는 at() 함수로 임의 위치 접근 불가)
+
 	 2) 컨테이너 어탭터: 
 	 3) 연관 컨테이너: 
 
@@ -62,7 +69,7 @@ int main()
 	*/
 
 	///// vector.1: 반복자 사용한 탐색 /////
-	cout << "vector.1" << endl;
+	cout << "*** vector.1 ***" << endl;
 	// 10개의 요소를 가진 벡터와 반복자 2개 생성
 	vector<float> vec(10);					// 벡터(시퀀스 컨테이너) 객체 인스턴스화
 	vector<float>::iterator iter;			// 반복자 객체 인스턴스화 (inner 클래스)
@@ -71,28 +78,27 @@ int main()
 	for (int i = 0; i < 10; i++)
 	{ vec.at(i) = i + 10.1f; }	// 요소에 접근
 
-	cout << "   탐색: ";
+	cout << "기본탐색: ";
 	for (iter = vec.begin(); iter != vec.end(); ++iter) // 기본 반복자 ++ 이동 (오른쪽)
 	{ cout << setw(4) << *iter << "   "; }
 	cout << endl;
 
-	cout << "역 탐색: ";
+	cout << "역  탐색: ";
 	for (rIter = vec.rbegin(); rIter != vec.rend(); ++rIter) // 역 반복자 ++ 이동 (왼쪽)
 	{ cout << setw(4) << *rIter << "   "; }
 	cout << endl << endl;
+	///////////////////////////////////////
 
 
 	///// vector.2: 반복자를 사용한 양방향 임의 접근 /////
-	cout << "vector.2" << endl;
+	cout << "*** vector.2 ***" << endl;
 	// 벡터와 반복자 인스턴스화
 	vector<int> vec2;
 	vector<int>::iterator iter2;
 	vector<int>::reverse_iterator rIter2;
 	// 벡터를 10개의 요소로 채우기
 	for (int i = 0; i < 10; i++)
-	{
-		vec2.push_back(i * 10);
-	}
+	{ vec2.push_back(i * 10); }
 
 	// 컨테이너 뒤에 요소를 삽입/제거하는 것은 별도의 재할당이 없기 때문에 빠르다
 	vec2.pop_back();					// 마지막 요소 제거
@@ -103,61 +109,139 @@ int main()
 	vec2.erase(vec2.begin() + 1);		// 컨테이너 중간에 요소 제거
 	//vec2.clear();						// 모든 요소 제거
 
-	// 기본 반복자로 출력  
 	cout << "기본 반복자로 임의 접근하여 출력  " << endl;
-	iter2 = vec2.begin();		// 컨테이너의 첫번째 요소에 기본반복자로 접근
-	iter2 += 4;					// + 이동 (오른쪽)
+	iter2 = vec2.begin();				// 컨테이너의 첫번째 요소에 기본반복자로 접근
+	iter2 += 4;							// + 이동 (오른쪽)
 	cout << *iter2 << " ";
-	iter2 -= 2;					// - 이동 (왼쪽)
+	iter2 -= 2;							// - 이동 (왼쪽)
 	cout << *iter2 << endl;
-	// 역 반복자로 출력
+
 	cout << "역 반복자로 임의 접근하여 출력" << endl;
-	rIter2 = vec2.rbegin();		// 컨테이너의 마지막 요소에 역반복자로 접근
-	rIter2 += 4;				// + 이동 (왼쪽)
+	rIter2 = vec2.rbegin();				// 컨테이너의 마지막 요소에 역반복자로 접근
+	rIter2 += 4;						// + 이동 (왼쪽)
 	cout << *rIter2 << " ";
-	rIter2 -= 2;				// - 이동 (오른쪽)
+	rIter2 -= 2;						// - 이동 (오른쪽)
 	cout << *rIter2 << endl << endl;
+	///////////////////////////////////////
 
 
 	///// vector.3: 2차원 벡터 /////
-	cout << "vector.3" << endl;
+	cout << "*** vector.3 ***" << endl;
 	// 벡터의 벡터(2차원 벡터) 생성
 	int rows = 10;	// 행
 	int cols = 10;	// 열
 	vector<vector<int>> vecArr(rows, vector <int>(cols)); // 2차원 벡터 선언
-	// 2차원 벡터의 값 설정
+
 	for (int i = 0; i < rows; i++)
 	{
 		for (int j = 0; j < cols; j++)
-		{ vecArr[i][j] = (i + 1) *(j + 1); } // 2차원 배열처럼 사용
+		{ vecArr[i][j] = (i + 1) *(j + 1); } // 값 할당
 	}
-	// 값 추출하기 출력
+
 	for (int i = 0; i < rows; i++)
 	{
 		for (int j = 0; j < cols; j++)
-		{ cout << setw(4) << vecArr[i][j] << " "; }
+		{ cout << setw(4) << vecArr[i][j] << " "; } // 값 출력
 		cout << endl;
 	}
 	cout << endl;
+	///////////////////////////////////////
 
 
 	///// deque.1: 요소의 순서 회전하기 /////
-	cout << "deque.1" << endl;
-	// 덱을 생성하고 요소 5개로 초기화
-	deque <string> deq(7);
-	string arr[5] = { "aaa", "bbb", "ccc", "ddd", "eee" };
+	cout << "*** deque.1 ***" << endl;
+	deque <string> deq(5);
+	string arr[] = { "aa", "bb", "cc", "dd", "ee" };
+
 	for (int i = 0; i < 5; i++)
 	{ deq[i] = arr[i]; }
-	print(deq);
-	// 시계 방향으로 회전
-	deq.push_back(deq.front());
-	deq.pop_front();				// 첫번째 요소 제거
-	print(deq);
-	// 시계 반대 방향으로 회전
-	deq.push_front(deq.back());		// 첫번째 요소 추가
-	deq.pop_back();
-	print(deq);
+	myPrint(deq); // 전역 함수 호출
 
+	for (int i = 0; i < deq.size(); i++)
+	{
+		deq.insert(deq.end() - i, deq.at(0));	// 문자열 반전
+		//deq.push_front("test");				// 첫번째 요소 삽입
+		deq.pop_front();						// 첫번째 요소 제거
+	}
+	myPrint(deq);
+	cout << endl;
+	///////////////////////////////////////
+
+
+	///// list.1: 반복자 사용한 탐색 /////
+	cout << "*** list.1 ***" << endl;
+	// list 양항향 반복자만 사용 가능
+	list<int> lst;
+	list<int>::iterator iter3;
+	list<int>::reverse_iterator rIter3;
+
+	for (int i = 0; i < 5; i++)
+	{ lst.push_back(i + 10); } // 뒤에 삽입
+
+	cout << "기본 방향" << endl;
+	for (iter3 = lst.begin(); iter3 != lst.end(); iter3++)
+	{ cout << *iter3 << "  "; }
+	cout << endl;
+
+	cout << "역 방향" << endl;
+	for (rIter3 = lst.rbegin(); rIter3 != lst.rend(); rIter3++)
+	{ cout << *rIter3 << "  "; }
+	cout << endl << endl;
+	///////////////////////////////////////
+
+
+	///// list.2: 반복자를 사용한 양방향 임의 접근 /////
+	cout << "*** list.2 ***" << endl;
+	// 리스트와 반복자 생성
+	list<int> lst2;
+	list<int>::iterator iter4;
+	list<int>::reverse_iterator rIter4;
+
+	// 리스트에 요소 10개 입력
+	for (int i = 0; i < 10; i++)
+	{ lst2.push_back(i * 10); }
+
+	cout << "기본 반복자로 임의 접근하여 출력" << endl;
+	iter4 = lst2.begin(); // 리스트의 시작 주소를 가리킴
+	iter4++; // 오른쪽 이돟 (list + 연산자 함수 없음)
+	iter4++;
+	iter4--;
+	cout << *iter4 << endl;
+
+	cout << "역 반복자로 임의 접근하여 출력" << endl;
+	rIter4 = lst2.rbegin(); // 리스트의 마지막 주소를 가리킴
+	rIter4++; // 왼쪽 이동
+	rIter4++;
+	rIter4--;
+	cout << *rIter4 << endl << endl;
+	///////////////////////////////////////
+
+
+	///// list.3: List를 활용한 연산자 오버로딩 /////
+	cout << "*** list.3 ***" << endl;
+	string strg1 = "9991";
+	string strg2 = "992";
+	string strg3 = { };
+
+	// 아스키코드 -> 정수를 나타내는 값으로 변경
+	BigInteger first(strg1);
+	BigInteger second(strg2);
+
+	// 정수로 변경 후 + 연산자 함수 호출
+	BigInteger result = first + second;
+
+	// 정수 -> 아스키코드를 나타내는 값으로 변경
+	strg1 = first.toString();
+	strg2 = second.toString();
+	strg3 = result.toString();
+
+	cout << setw(strg3.length()) << right << strg1 << " + " << endl;
+	cout << setw(strg3.length()) << right << strg2 << endl;
+	string dashes(strg3.length(), '-'); // 배열 '-' 초기화
+	cout << dashes << endl;
+	cout << setw(strg3.length()) << right << strg3 << endl;
+	///////////////////////////////////////
 
 	return 0; // 소멸자 호출
+	
 }
