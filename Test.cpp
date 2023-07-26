@@ -5,9 +5,8 @@
 // git push - 23072419
 // git push - 23072516
 // git push - 23072607
+// git push - 23072708
 
-#include <iostream>
-using namespace std;
 
 // 스마트 포인터?
 // 함수 포인터?
@@ -24,8 +23,6 @@ using namespace std;
 
 using namespace std;
 
-int main() {
-
-
-	return 0;
+void main() {
+	printf("test");
 }

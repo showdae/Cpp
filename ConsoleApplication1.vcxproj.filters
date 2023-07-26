@@ -75,6 +75,9 @@
     <ClCompile Include="Doubly_List_STL.cpp">
       <Filter>STL</Filter>
     </ClCompile>
+    <ClCompile Include="Set_STL.cpp">
+      <Filter>STL</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Parent.h">
@@ -99,6 +102,9 @@
       <Filter>자료 구조</Filter>
     </ClInclude>
     <ClInclude Include="Doubly_List_STL.h">
+      <Filter>STL</Filter>
+    </ClInclude>
+    <ClInclude Include="Set_STL.h">
       <Filter>STL</Filter>
     </ClInclude>
   </ItemGroup>

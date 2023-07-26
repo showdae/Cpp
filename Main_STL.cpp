@@ -1,23 +1,71 @@
-// 표준 라이브러리 헤더
+/*
+1. 링크드 리스트 (list)
+	특징:	노드들이 연결된 구조로 데이터를 저장하는 자료구조. 각 노드는 데이터와 다음 노드를 가리키는 포인터로 이루어져 있습니다.
+	장점:	중간에 요소를 삽입하거나 삭제하는 경우 유리합니다.
+	단점:	랜덤 접근이 불가능하여 원하는 위치로 바로 접근하는 데에 비효율적입니다.
+			각 노드마다 포인터를 사용하기 때문에 메모리 사용이 더 많을 수 있습니다.
+	사용예:	데이터의 삽입과 삭제가 빈번하고 랜덤 접근이 필요 없는 경우에 유용합니다.
+
+2. 동적 배열 (vector, deque, stack, queue, priority_queue)
+	특징:	동적으로 크기가 조절 가능한 배열로, 데이터가 연속적으로 저장됩니다.
+	장점:	랜덤 접근이 가능하여 인덱스를 사용하여 원하는 위치로 바로 접근하는 데에 효율적입니다.
+			메모리를 연속적으로 사용하여 메모리 캐시의 활용이 용이합니다.
+	단점:	중간에 요소를 삽입하거나 삭제하는 경우 데이터를 이동시켜야 하므로 성능이 느릴 수 있습니다.
+			크기가 동적으로 변경될 때, 메모리를 재할당하여 복사해야 하는 경우가 발생하여 성능 저하의 원인이 될 수 있습니다.
+	사용예:	랜덤 접근이 필요하고 크기가 동적으로 변하는 경우에 유용합니다.
+
+3. 이진 탐색 트리 (set, map):
+	특징:	각 노드가 최대 두 개의 자식 노드를 가지며, 왼쪽 서브트리의 값은 현재 노드보다 작고 오른쪽 서브트리의 값은 현재 노드보다 큰 이진 트리입니다.
+	장점:	탐색, 삽입, 삭제 등의 작업이 평균적으로 O(log n) 시간에 이루어집니다. (균형 트리인 경우)
+			정렬된 데이터를 효율적으로 저장하고 탐색할 수 있습니다.
+	단점:	트리의 높이가 한 쪽으로 치우치는 경우 성능이 저하될 수 있습니다. (균형 트리를 유지하기 위한 추가 작업 필요)
+	사용예:	정렬된 데이터를 다루거나 탐색, 삽입, 삭제 작업의 평균 시간 복잡도가 O(log n)으로 충족되는 경우에 유용합니다.
+*/
+
+// 표준 라이브러리
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <utility>	// pair 구조체 정의
+#include <sstream>	// 문자열 스트림 (토큰화)
 
-// STL 시퀀스 컨테이너 헤더
-#include <vector>
-#include <deque> // 덱
-#include <list>
+// STL
+// 시퀀스 컨테이너 (반복자 사용)
+#include <vector>	// 뒤로 삽입, 제거 (동적 배열)
+#include <deque>	// double-ended-queque 앞뒤로 삽입, 제거 (동적 배열)
+#include <list>		// 원하는 위치에 삽입, 제거 (이중 연결 리스트)
+
+// 컨테이너 어댑터 (가벼운 클래스 인터페이스, 반복자 미사용)
+#include <stack>	// 후입선출 구조 (동적 배열)
+#include <queue>	// 선입선출 구조 (동적 배열)
+					// priority_queue(우선순위 큐): 삽입시 우선순위로 정렬 (동적 배열)
+
+// 연관 컨테이너 (반복자 사용, 탐색 기능)
+#include <set>		// key를 사용 (이진 탐색 트리)
+#include <map>		// key와 value 사용 (이진 탐색 트리, pair 구조체)
 
 // 분할 구현 헤더
 #include "Doubly_List_STL.h"
+#include "Set_STL.h"
 
 using namespace std;
 
-// 전역 함수
-void myPrint(deque<string> deq)
+// deque Print 함수
+void dequePrint(deque<string> deq)
 {
 	for (int i = 0; i < deq.size(); i++)
 	{ cout << deq.at(i) << "  "; }
+	cout << endl;
+}
+
+// queue Print 함수
+void queuePrint(queue<int> queue)
+{
+	while (!queue.empty()) // 사이즈 체크
+	{
+		cout << queue.front() << " "; // 첫번째 요소 접근
+		queue.pop(); // 첫번째 요소 제거
+	}
 	cout << endl;
 }
 
@@ -26,18 +74,18 @@ int main()
 	////////// chapter19: STL //////////
 	/*
 	Standard Template Library (표준 템플릿 라이브러리 [클래스])
-	1. 반복자: STL은 반복자를 사용해 컨테이너 요소에 접근해서 처리
+	1. 반복자(iterator): STL은 반복자를 사용해 컨테이너 요소에 접근해서 처리
 	 1) 반복자의 구조
 	  - 포인터를 추상화 (반복자는 맴버 변수로 포인터, 이를 활용하는 맴버 함수를 가짐)
 	  - 반복자는 컨테이너의 자료형, 요소의 자료형과 상관없이 사용
 	  - 컨테이너와 내부의 요소는 서로 자료형에 영향을 주지 않음
 	    (어떤곳에 어떤것을 넣어도 상관없이 무언가를 저장, 접근 가능)
-	  - 컨테이너는 "내부반복자"를 가짐 (외부반복자 처리), 사용자는 "외부반복자"로 컨테이너 요소에 접근
+	  - 사용자는 "외부반복자"로 컨테이너 요소에 접근, 컨테이너는 "내부반복자"를 가짐 (외부반복자 처리)
 	 2) 반복자의 종류
 	  - 입력 반복자:		요소를 읽기만 가능
 	  - 출력 반복자:		요소를 쓰기만 가능
 	  - 전방 반복자:		요소를 읽고 / 쓰기 가능
-	  - 양방향 반복자:		양방향 접근 가능 (++, --)
+	  - 양방향 반복자:	양방향 접근 가능 (++, --)
 	  - 임의 접근 반복자:	양방향 반복자에 연산자를 추가 (한번에 원하는 요소에 접근)
 	 3) 이동 방향
 	  - 컨테이너는 "기본반복자"(begin/end)와 "역반복자"(rbegin/rend) 2가지 종류의 반복자 정의
@@ -56,19 +104,30 @@ int main()
 	  - list(이중 연결 리스트):	장점:	컨테이너 원하는 위치에 빠른 삽입과 삭제, sort() 함수 지원
 								단점:	양방향 반복자만 접근 가능 (인덱스 또는 at() 함수로 임의 위치 접근 불가)
 
-	 2) 컨테이너 어탭터: 
-	 3) 연관 컨테이너: 
+	 2) 컨테이너 어탭터: 시퀀스 컨테이너보다 가벼운 인터페이스(클래스 맴버 함수가 적다)를 가지며 사용하기 쉽다
+						begin, end 처럼 반복자를 만드는 함수를 제공하지 않으므로, 알고리즘 적용 불가
+	  - stack: stack.push, stack.pop, stack.top(접근) 맴버 함수 제공 (후입선출)
+	  - queue:  queue.push, queue.pop, queue.front(앞에 접근), queue.back(뒤에 접근), queue.size, queue.empty 맴버 함수 제공 (선입선출)
+	  - priority_queue: 우선순위 큐는 요소를 삽입할때, 시점이 아닌 우선순위 기준으로 정렬됨 (정렬)
+						priority_queue.push, priority_queue.pop, priority_queue.top(앞에 접근)
 
-	3. 알고리즘:	컨테이너 요소에 적용할 연산
+	 3) 연관 컨테이너(이진 탐색 트리): key를 기반으로 값을 저장하고 접근
+	  - set: 키(key)를 갖는 요소를 저장하는 컨테이너 (키를 기준으로 오름차순 정렬, 키 값이 중복될 경우 무시됨)
+	  - map: 키(key)와 값(value)을 쌍으로 갖는 요소를 저장하는 컨테이너 (키를 기준으로 오름차순 정렬, 키 값이 중복될 경우 value 값이 증가)
+			 pair 구조체: 2개의 템플릿 데이터 맴버로 정의 (<utility> 헤더 정의)
+
+	3. 함수와 함수 객체: ?
+
+	4. 알고리즘:	컨테이너 요소에 적용할 연산
 	 1) 비변경:	컨테이너의 구조를 변경하지 않음
-	 2) 변경:		컨테이너의 구조를 변경
-	 3) 정렬:		컨테이너의 요소를 정렬
-	 4) 수치:		숫자 요소에 수학 처리
-
-	4. 함수와 함수 객체: ?
+	 2) 변경:	컨테이너의 구조를 변경
+	 3) 정렬:	컨테이너의 요소를 정렬
+	 4) 수치:	숫자 요소에 수학 처리
 	*/
 
-	///// vector.1: 반복자 사용한 탐색 /////
+	/////////////////////////////////////////////////
+	///// vector.1: 반복자 사용한 탐색
+	/////////////////////////////////////////////////
 	cout << "*** vector.1 ***" << endl;
 	// 10개의 요소를 가진 벡터와 반복자 2개 생성
 	vector<float> vec(10);					// 벡터(시퀀스 컨테이너) 객체 인스턴스화
@@ -87,10 +146,11 @@ int main()
 	for (rIter = vec.rbegin(); rIter != vec.rend(); ++rIter) // 역 반복자 ++ 이동 (왼쪽)
 	{ cout << setw(4) << *rIter << "   "; }
 	cout << endl << endl;
-	///////////////////////////////////////
 
 
-	///// vector.2: 반복자를 사용한 양방향 임의 접근 /////
+	/////////////////////////////////////////////////
+	///// vector.2: 반복자를 사용한 양방향 임의 접근
+	/////////////////////////////////////////////////
 	cout << "*** vector.2 ***" << endl;
 	// 벡터와 반복자 인스턴스화
 	vector<int> vec2;
@@ -122,10 +182,11 @@ int main()
 	cout << *rIter2 << " ";
 	rIter2 -= 2;						// - 이동 (오른쪽)
 	cout << *rIter2 << endl << endl;
-	///////////////////////////////////////
 
 
-	///// vector.3: 2차원 벡터 /////
+	/////////////////////////////////////////////////
+	///// vector.3: 2차원 벡터
+	/////////////////////////////////////////////////
 	cout << "*** vector.3 ***" << endl;
 	// 벡터의 벡터(2차원 벡터) 생성
 	int rows = 10;	// 행
@@ -145,17 +206,19 @@ int main()
 		cout << endl;
 	}
 	cout << endl;
-	///////////////////////////////////////
 
 
-	///// deque.1: 요소의 순서 회전하기 /////
+	/////////////////////////////////////////////////
+	///// deque.1: 요소의 순서 회전하기
+	/////////////////////////////////////////////////
 	cout << "*** deque.1 ***" << endl;
 	deque <string> deq(5);
 	string arr[] = { "aa", "bb", "cc", "dd", "ee" };
 
 	for (int i = 0; i < 5; i++)
 	{ deq[i] = arr[i]; }
-	myPrint(deq); // 전역 함수 호출
+
+	dequePrint(deq); // 전역 함수 호출
 
 	for (int i = 0; i < deq.size(); i++)
 	{
@@ -163,12 +226,13 @@ int main()
 		//deq.push_front("test");				// 첫번째 요소 삽입
 		deq.pop_front();						// 첫번째 요소 제거
 	}
-	myPrint(deq);
+	dequePrint(deq);
 	cout << endl;
-	///////////////////////////////////////
 
 
-	///// list.1: 반복자 사용한 탐색 /////
+	/////////////////////////////////////////////////
+	///// list.1: 반복자 사용한 탐색
+	/////////////////////////////////////////////////
 	cout << "*** list.1 ***" << endl;
 	// list 양항향 반복자만 사용 가능
 	list<int> lst;
@@ -187,10 +251,11 @@ int main()
 	for (rIter3 = lst.rbegin(); rIter3 != lst.rend(); rIter3++)
 	{ cout << *rIter3 << "  "; }
 	cout << endl << endl;
-	///////////////////////////////////////
 
 
-	///// list.2: 반복자를 사용한 양방향 임의 접근 /////
+	/////////////////////////////////////////////////
+	///// list.2: 반복자를 사용한 양방향 임의 접근
+	/////////////////////////////////////////////////
 	cout << "*** list.2 ***" << endl;
 	// 리스트와 반복자 생성
 	list<int> lst2;
@@ -214,10 +279,11 @@ int main()
 	rIter4++;
 	rIter4--;
 	cout << *rIter4 << endl << endl;
-	///////////////////////////////////////
 
 
-	///// list.3: List를 활용한 연산자 오버로딩 /////
+	/////////////////////////////////////////////////
+	///// list.3: List를 활용한 연산자 오버로딩
+	/////////////////////////////////////////////////
 	cout << "*** list.3 ***" << endl;
 	string strg1 = "9991";
 	string strg2 = "992";
@@ -239,9 +305,176 @@ int main()
 	cout << setw(strg3.length()) << right << strg2 << endl;
 	string dashes(strg3.length(), '-'); // 배열 '-' 초기화
 	cout << dashes << endl;
-	cout << setw(strg3.length()) << right << strg3 << endl;
-	///////////////////////////////////////
+	cout << setw(strg3.length()) << right << strg3 << endl << endl;
+
+
+	/////////////////////////////////////////////////
+	///// stack.1: 10진수 -> 16진수 변경
+	/////////////////////////////////////////////////
+	cout << "*** stack.1 ***" << endl;
+	stack<char> stk;
+	string converter("0123456789ABCDEF"); // 16진수 종류
+	int decimal = 10;
+
+	// 16진수 문자로 변환하고 스택에 입력  
+	while (decimal != 0)
+	{
+		stk.push(converter[decimal % 16]);	// 나머지 값에 접근하여 컨테이너에 삽입 
+		decimal = decimal / 16;				// while 탈출 조건
+	}
+	cout << "10진수 = " << decimal << ", 16진수 = " << stk.top() << endl << endl; // 접근
+	stk.pop(); // 제거
+
+
+	/////////////////////////////////////////////////
+	///// queue.1: queue를 활용한 분류
+	/////////////////////////////////////////////////
+	cout << "*** queue.1 ***" << endl;
+	queue<int> queue1, queue2, queue3;
+	int rNum;
+	int donation;
+
+	srand(time(0)); // 시간을 이용한 랜덤 시드 생성
+	for (int i = 0; i < 10; i++)
+	{
+		rNum = rand(); // 난수 생성
+		donation = rNum % 30;
+		switch (donation / 10)
+		{
+		case 0:  queue1.push(donation); // 0 ~ 9
+			break;
+		case 1:  queue2.push(donation); // 10 ~ 19
+			break;
+		case 2:  queue3.push(donation); // 20 ~ 29
+			break;
+		default: cout << "error" << endl;
+			break;
+		}
+	}
+	queuePrint(queue1);
+	queuePrint(queue2);
+	queuePrint(queue3);
+	cout << endl;
+
+
+	/////////////////////////////////////////////////
+	///// priority_queue.1: 우선순위 큐 사용
+	/////////////////////////////////////////////////
+	cout << "*** priority_queue.1 ***" << endl;
+	priority_queue<int> line;
+
+	line.push(4);
+	line.push(7);
+	line.push(2);
+	line.push(6);
+	line.push(7);
+	line.push(8);
+	line.push(2); // push하는 시점과 관계 없이 우선순위(값) 기준으로 정렬됨
+
+	// 우선 순위에 따라 요소 출력
+	while (!line.empty())
+	{
+		cout << line.top() << " "; // 첫번째 요소에 접근
+		line.pop(); // 제거
+	}
+	cout << endl << endl;
+
+
+	/////////////////////////////////////////////////
+	///// set.1: 오름차순 내림차순 정렬
+	/////////////////////////////////////////////////
+	cout << "*** set.1 ***" << endl;
+	set<int> st;
+
+	// 삽입시 오름 차순으로 정렬
+	st.insert(10);
+	st.insert(30);
+	st.insert(20);
+	st.insert(20); // 중복 데이터 있을 경우 무시됨
+
+	cout << "오름차순 출력" << endl;
+	set <int>::iterator iter5;
+	for (iter5 = st.begin(); iter5 != st.end(); iter5++)
+	{
+		cout << *iter5 << " ";
+	}
+	cout << endl;
+
+	cout << "내림차순 출력" << endl;
+	set <int>::reverse_iterator riter5;
+	for (riter5 = st.rbegin(); riter5 != st.rend(); riter5++)
+	{
+		cout << *riter5 << " ";
+	}
+	cout << endl;
+
+	set <int>::iterator iter7 = st.find(20); // 탐색
+	iter7--;
+	cout << "탐색 = " << *iter7 << endl << endl;
+	
+
+	/////////////////////////////////////////////////
+	///// set.2: Set을 활용한 < 연산자 오버로딩
+	/////////////////////////////////////////////////
+	cout << "*** set.2 ***" << endl;
+	Student student1(111, "aaa", 1.11); // 객체 생성
+	Student student3(333, "ccc", 3.33);
+	Student student2(222, "bbb", 2.22);
+	
+	set<Student> stdSet;		// 컨테이너 생성
+	stdSet.insert(student1);
+	stdSet.insert(student3);	// < 연산자 함수 호출하여 우선순위 비교하여 정렬
+	stdSet.insert(student2);
+
+	set <Student>::iterator iter8;
+	for (iter8 = stdSet.begin(); iter8 != stdSet.end(); iter8++)
+	{
+		iter8->print(); // 출력
+	}
+	cout << endl;
+
+
+	/////////////////////////////////////////////////
+	///// map.1: Key와 value 저장하기
+	/////////////////////////////////////////////////
+	cout << "*** map.1 ***" << endl;
+	map<string, int> scores; // 맴버 변수로 pair 구조체 사용
+	
+	// key 값을 기준으로 오름차순 정렬
+	scores["aaa"] = 10;	// Key:"aaa", value: 10
+	scores["ccc"] = 20;
+	scores["bbb"] = 30;
+
+	map<string, int>::iterator iter9;
+	for (iter9 = scores.begin(); iter9 != scores.end(); iter9++)
+	{
+		// pair 구조체의 첫번째 / 두번째 맴버 변수 (각각 자료형이 다를수 있다)
+		cout << iter9->first << "  ";	// string
+		cout << iter9->second << endl;	// int
+	}
+	cout << endl;
+
+
+	/////////////////////////////////////////////////
+	///// map.2: 토큰화하여 key 삽입
+	/////////////////////////////////////////////////
+	cout << "*** map.2 ***" << endl;
+	map<string, int> freq;
+	string word("asd zxc asd");
+	string token;
+	stringstream ss(word);	// 문자열 스트림으로 변경
+
+	while (getline(ss, token, ' ')) // 구분문자 기준으로 문자열 분리
+	{
+		// key: 토큰 문자열, value: 1 (defalt)
+		++freq[token]; // key가 같을 경우 value++ 증가
+	}
+
+	map<string, int>::iterator iter10;
+	for (iter10 = freq.begin(); iter10 != freq.end(); iter10++)
+	{
+		cout << iter10->first << "   " << iter10->second << endl; // pair 구조체 출력
+	}
 
 	return 0; // 소멸자 호출
-	
 }
