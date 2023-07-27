@@ -22,55 +22,6 @@
 	사용예:	정렬된 데이터를 다루거나 탐색, 삽입, 삭제 작업의 평균 시간 복잡도가 O(log n)으로 충족되는 경우에 유용합니다.
 */
 
-// 표준 라이브러리
-#include <iostream>
-#include <iomanip>
-#include <string>
-#include <utility>	// pair 구조체 정의
-#include <sstream>	// 문자열 스트림 (토큰화)
-
-// STL
-// 시퀀스 컨테이너 (반복자 사용)
-#include <vector>	// 뒤로 삽입, 제거 (동적 배열)
-#include <deque>	// double-ended-queque 앞뒤로 삽입, 제거 (동적 배열)
-#include <list>		// 원하는 위치에 삽입, 제거 (이중 연결 리스트)
-
-// 컨테이너 어댑터 (가벼운 클래스 인터페이스, 반복자 미사용)
-#include <stack>	// 후입선출 구조 (동적 배열)
-#include <queue>	// 선입선출 구조 (동적 배열)
-					// priority_queue(우선순위 큐): 삽입시 우선순위로 정렬 (동적 배열)
-
-// 연관 컨테이너 (반복자 사용, 탐색 기능)
-#include <set>		// key를 사용 (이진 탐색 트리)
-#include <map>		// key와 value 사용 (이진 탐색 트리, pair 구조체)
-
-// 분할 구현 헤더
-#include "Doubly_List_STL.h"
-#include "Set_STL.h"
-
-using namespace std;
-
-// deque Print 함수
-void dequePrint(deque<string> deq)
-{
-	for (int i = 0; i < deq.size(); i++)
-	{ cout << deq.at(i) << "  "; }
-	cout << endl;
-}
-
-// queue Print 함수
-void queuePrint(queue<int> queue)
-{
-	while (!queue.empty()) // 사이즈 체크
-	{
-		cout << queue.front() << " "; // 첫번째 요소 접근
-		queue.pop(); // 첫번째 요소 제거
-	}
-	cout << endl;
-}
-
-int main()
-{
 	////////// chapter19: STL //////////
 	/*
 	Standard Template Library (표준 템플릿 라이브러리 [클래스])
@@ -116,8 +67,15 @@ int main()
 	  - map: 키(key)와 값(value)을 쌍으로 갖는 요소를 저장하는 컨테이너 (키를 기준으로 오름차순 정렬, 키 값이 중복될 경우 value 값이 증가)
 			 pair 구조체: 2개의 템플릿 데이터 맴버로 정의 (<utility> 헤더 정의)
 
-	3. 함수와 함수 객체: ?
-
+	3. 함수와 함수 객체: 알고리즘은 함수 또는 함수 객체를 활용
+	 1) 함수 포인터:	함수의 이름은 함수가 저장된 메모리 위치의 첫번째 바이트를 가리키는 포인터
+					A함수의 인자로 B함수를 사용하여 호출
+	 2) 함수 객체:	클래스에 () 연산자 함수를 오버로딩하여 생성
+					함수를 매개변수로 전달, 함수를 리턴할 수 있음
+					함수 객체는 상태를 가질수 있음 (호출시마다 어떤 정보를 가질수 있음)
+					상속을 활용해 다른 함수 객체를 추가로 파생할 수도 있음
+					STL 함수 객체 (수학, 관계, 논리)
+					
 	4. 알고리즘:	컨테이너 요소에 적용할 연산
 	 1) 비변경:	컨테이너의 구조를 변경하지 않음
 	 2) 변경:	컨테이너의 구조를 변경
@@ -125,6 +83,77 @@ int main()
 	 4) 수치:	숫자 요소에 수학 처리
 	*/
 
+// 표준 라이브러리
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include <utility>	// pair 구조체 정의
+#include <sstream>	// 문자열 스트림 (토큰화)
+
+// STL
+// 시퀀스 컨테이너 (반복자 사용)
+#include <vector>		// 뒤로 삽입, 제거 (동적 배열)
+#include <deque>		// double-ended-queque 앞뒤로 삽입, 제거 (동적 배열)
+#include <list>			// 원하는 위치에 삽입, 제거 (이중 연결 리스트)
+
+// 컨테이너 어댑터 (가벼운 클래스 인터페이스, 반복자 미사용)
+#include <stack>		// 후입선출 구조 (동적 배열)
+#include <queue>		// 선입선출 구조 (동적 배열)
+						// priority_queue(우선순위 큐): 삽입시 우선순위로 정렬 (동적 배열)
+
+// 연관 컨테이너 (반복자 사용, 탐색 기능)
+#include <set>			// key를 사용 (이진 탐색 트리)
+#include <map>			// key와 value 사용 (이진 탐색 트리, pair 구조체)
+
+// 함수와 함수 객체
+#include <functional>	// STL 함수 객체
+
+// 분할 구현 헤더
+#include "Doubly_List_STL.h"
+#include "Set_STL.h"
+
+using namespace std;
+
+// deque Print 함수
+void dequePrint(deque<string> deq)
+{
+	for (int i = 0; i < deq.size(); i++)
+	{ cout << deq.at(i) << "  "; }
+	cout << endl;
+}
+
+// queue Print 함수
+void queuePrint(queue<int> queue)
+{
+	while (!queue.empty()) // 사이즈 체크
+	{
+		cout << queue.front() << " "; // 첫번째 요소 접근
+		queue.pop(); // 첫번째 요소 제거
+	}
+	cout << endl;
+}
+
+// int Print 함수
+void intPrint(int value)
+{
+	cout << value << endl;
+}
+
+// 함수에 대한 포인터
+void funcPtr(int x, void(*f)(int))
+{
+	f(x);
+}
+
+// 함수 객체
+class classPrint
+{
+public:
+	void operator()(int value) { cout << value << endl << endl; }
+};
+
+int main()
+{
 	/////////////////////////////////////////////////
 	///// vector.1: 반복자 사용한 탐색
 	/////////////////////////////////////////////////
@@ -475,6 +504,60 @@ int main()
 	{
 		cout << iter10->first << "   " << iter10->second << endl; // pair 구조체 출력
 	}
+	cout << endl;
+
+
+	/////////////////////////////////////////////////
+	///// 함수와 함수 객체.1: 함수 포인터 사용자 함수 활용
+	/////////////////////////////////////////////////
+	cout << "*** 함수와 함수 객체.1 ***" << endl;
+	funcPtr(10, intPrint);	// 함수 포인터: intPrint 함수에 대한 포인터를 전달해서 호출
+	funcPtr(20, intPrint);
+	cout << endl;
+
+
+	/////////////////////////////////////////////////
+	///// 함수와 함수 객체.2: 함수 포인터 STL 함수 활용
+	/////////////////////////////////////////////////
+	cout << "*** 함수와 함수 객체.2 ***" << endl;
+	vector<int> vec3;
+	vec3.push_back(10);
+	vec3.push_back(20);
+
+	// for_each: STL 알고리즘
+	// 반복자로 범위 지정, 마지막 매개변수에 함수에 대한 포인터를 지정
+	// 범위 내부에 있는 요소들에 함수를 적용
+	// intPrint() 함수는 반복자가 가리키는 대상(*iterator)의 자료형을 파라메타로 받음
+	for_each(vec3.begin(), vec3.end(), intPrint); // 함수 포인터
+	cout << endl;
+
+
+	/////////////////////////////////////////////////
+	///// 함수와 함수 객체.3: 함수 객체 생성 및 호출
+	/////////////////////////////////////////////////
+	cout << "*** 함수와 함수 객체.3 ***" << endl;
+	classPrint print;
+	print(10);	// () 연산자 오버로드 함수를 호출
+
+
+	/////////////////////////////////////////////////
+	///// 함수와 함수 객체.4: STL 함수 객체
+	/////////////////////////////////////////////////
+	cout << "*** 함수와 함수 객체.4 ***" << endl;
+	// 4개의 요소를 갖는 벡터 생성
+	vector <int> vec4;
+	vec4.push_back(24);
+	vec4.push_back(42);
+	vec4.push_back(73);
+	vec4.push_back(92);
+
+	// 함수에 대한 포인터로 요소 출력
+	for_each(vec4.begin(), vec4.end(), intPrint);
+	cout << endl;
+
+	// 모든 요소의 부호를 반전하고 출력
+	transform(vec4.begin(), vec4.end(), vec4.begin(), negate<int>());
+	for_each(vec4.begin(), vec4.end(), intPrint);
 
 	return 0; // 소멸자 호출
 }
