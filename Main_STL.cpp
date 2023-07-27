@@ -68,18 +68,27 @@
 			 pair 구조체: 2개의 템플릿 데이터 맴버로 정의 (<utility> 헤더 정의)
 
 	3. 함수와 함수 객체: 알고리즘은 함수 또는 함수 객체를 활용
-	 1) 함수 포인터:	함수의 이름은 함수가 저장된 메모리 위치의 첫번째 바이트를 가리키는 포인터
+	 1) 함수 포인터:	함수를 포인터처럼 사용할 수 있음
+					함수의 이름은 함수가 저장된 메모리 위치의 첫번째 바이트를 가리키는 포인터
 					A함수의 인자로 B함수를 사용하여 호출
-	 2) 함수 객체:	클래스에 () 연산자 함수를 오버로딩하여 생성
+	 2) 함수 객체:	클래스에 () 연산자 오버로딩을 활용하여 함수 객체 생성
 					함수를 매개변수로 전달, 함수를 리턴할 수 있음
 					함수 객체는 상태를 가질수 있음 (호출시마다 어떤 정보를 가질수 있음)
 					상속을 활용해 다른 함수 객체를 추가로 파생할 수도 있음
-					STL 함수 객체 (수학, 관계, 논리)
+	 3) STL 함수 객체: 수학(+...), 관계(==...), 논리(&&...) 내장 연산을 구현하고 있는 함수 객체
 					
-	4. 알고리즘:	컨테이너 요소에 적용할 연산
-	 1) 비변경:	컨테이너의 구조를 변경하지 않음
-	 2) 변경:	컨테이너의 구조를 변경
+	4. 알고리즘:	컨테이너 요소에 반복자를 사용해서 연산을 처리하는 전역 함수 (시퀀스/연관 컨테이너에 적용 가능, 컨테이너 어댑터 적용 불가)
+				모든 알고리즘은 반복자 first 위치부터 last위치 사이에 적용
+				컨테이너가 적절한 반복자를 지원하지 않으면, 알고리즘 적용 불가
+	 1) 비변경:	컨테이너 구조 변경 불가, 요소값 변경 가능
+				count(), count_if(), find(), for_each()
+				InIter(입력 반복자)
+	 2) 변경:	컨테이너 구조 변경 
+				generate(), reverse(), rotate(), random_shuffle(), transform()
+				BdIter(양방향 반복자), FwIter(전방 반복자)
 	 3) 정렬:	컨테이너의 요소를 정렬
+				sort(), binary_search(), min_element(), max_element(), set_union()
+				less<T>: < (오름차순 함수 객체), greater<T>: > (내림차순 함수 객체)
 	 4) 수치:	숫자 요소에 수학 처리
 	*/
 
@@ -89,6 +98,10 @@
 #include <string>
 #include <utility>	// pair 구조체 정의
 #include <sstream>	// 문자열 스트림 (토큰화)
+
+// 분할 구현 헤더
+#include "Doubly_List_STL.h"
+#include "Set_STL.h"
 
 // STL
 // 시퀀스 컨테이너 (반복자 사용)
@@ -105,12 +118,12 @@
 #include <set>			// key를 사용 (이진 탐색 트리)
 #include <map>			// key와 value 사용 (이진 탐색 트리, pair 구조체)
 
-// 함수와 함수 객체
-#include <functional>	// STL 함수 객체
+// 함수 객체
+#include <functional>	// 연산자 오버로딩을 사용하여 클래스를 함수처럼 사용
 
-// 분할 구현 헤더
-#include "Doubly_List_STL.h"
-#include "Set_STL.h"
+// 알고리즘 (함수)
+#include <algorithm>	// 비변경, 변경, 정렬 알고리즘
+#include <numeric>		// 수치 알고리즘
 
 using namespace std;
 
@@ -136,7 +149,7 @@ void queuePrint(queue<int> queue)
 // int Print 함수
 void intPrint(int value)
 {
-	cout << value << endl;
+	cout << value << "   ";
 }
 
 // 함수에 대한 포인터
@@ -145,12 +158,24 @@ void funcPtr(int x, void(*f)(int))
 	f(x);
 }
 
-// 함수 객체
+// 함수 객체 (클래스를 함수처럼 사용)
 class classPrint
 {
 public:
 	void operator()(int value) { cout << value << endl << endl; }
 };
+
+// 비변경 알고리즘 (짝수 찿기)
+bool isEven(int value)
+{
+	return (value % 2 == 0);
+}
+
+// 비변경 알고리즘 (곱하기)
+void timesTwo(int& value)
+{
+	value = value * 2;
+}
 
 int main()
 {
@@ -450,13 +475,13 @@ int main()
 	Student student3(333, "ccc", 3.33);
 	Student student2(222, "bbb", 2.22);
 	
-	set<Student> stdSet;		// 컨테이너 생성
-	stdSet.insert(student1);
-	stdSet.insert(student3);	// < 연산자 함수 호출하여 우선순위 비교하여 정렬
-	stdSet.insert(student2);
+	set<Student> Set2;		// 컨테이너 생성
+	Set2.insert(student1);
+	Set2.insert(student3);	// < 연산자 함수 호출하여 우선순위 비교하여 정렬
+	Set2.insert(student2);
 
 	set <Student>::iterator iter8;
-	for (iter8 = stdSet.begin(); iter8 != stdSet.end(); iter8++)
+	for (iter8 = Set2.begin(); iter8 != Set2.end(); iter8++)
 	{
 		iter8->print(); // 출력
 	}
@@ -513,51 +538,194 @@ int main()
 	cout << "*** 함수와 함수 객체.1 ***" << endl;
 	funcPtr(10, intPrint);	// 함수 포인터: intPrint 함수에 대한 포인터를 전달해서 호출
 	funcPtr(20, intPrint);
-	cout << endl;
+	cout << endl << endl;
 
 
 	/////////////////////////////////////////////////
-	///// 함수와 함수 객체.2: 함수 포인터 STL 함수 활용
+	///// 함수와 함수 객체.2: 함수 객체 생성 및 호출
 	/////////////////////////////////////////////////
 	cout << "*** 함수와 함수 객체.2 ***" << endl;
+	classPrint print;	// 객체 생성
+	print(10);			// () 연산자 오버로드 객체 함수를 호출
+
+
+	/////////////////////////////////////////////////
+	///// 함수와 함수 객체.3: STL 함수 및 함수 객체 사용
+	/////////////////////////////////////////////////
+	cout << "*** 함수와 함수 객체.3 ***" << endl;
 	vector<int> vec3;
 	vec3.push_back(10);
 	vec3.push_back(20);
 
 	// for_each: STL 알고리즘
-	// 반복자로 범위 지정, 마지막 매개변수에 함수에 대한 포인터를 지정
-	// 범위 내부에 있는 요소들에 함수를 적용
-	// intPrint() 함수는 반복자가 가리키는 대상(*iterator)의 자료형을 파라메타로 받음
-	for_each(vec3.begin(), vec3.end(), intPrint); // 함수 포인터
-	cout << endl;
+	//			 반복자로 범위 지정, 마지막 매개변수에 함수에 대한 포인터를 지정
+	//			 범위 내부에 있는 요소들에 함수를 적용
+	//			 intPrint() 함수는 반복자가 가리키는 대상(*iterator)의 자료형을 파라메타로 받음
+	for_each(vec3.begin(), vec3.end(), intPrint); // 함수 포인터로 요소 출력
+
+	// transform:	STL 알고리즘, transform() 함수에서 내부적으로 negate 객체를 호출
+	//				transform(inIter first, inIter second, outIter start, oper);
+	//				first와 second 사이의 요소에 oper 함수를 적용하고, 리턴된 결과를 start 위치부터 씀
+	// negate:		STL 함수객체, (-) 음수 연산자 함수 객체	
+	transform(vec3.begin(), vec3.end(), vec3.begin(), negate<int>()); // 요소들의 음수화
+	for_each(vec3.begin(), vec3.end(), intPrint);
+	cout << endl << endl;
 
 
 	/////////////////////////////////////////////////
-	///// 함수와 함수 객체.3: 함수 객체 생성 및 호출
+	///// 비변경 알고리즘.1
 	/////////////////////////////////////////////////
-	cout << "*** 함수와 함수 객체.3 ***" << endl;
-	classPrint print;
-	print(10);	// () 연산자 오버로드 함수를 호출
+	cout << "*** 비변경 알고리즘.1 ***" << endl;
+	vector<int> vec4;
+	vec4.push_back(10);
+	vec4.push_back(12);
+	vec4.push_back(15);
 
-
-	/////////////////////////////////////////////////
-	///// 함수와 함수 객체.4: STL 함수 객체
-	/////////////////////////////////////////////////
-	cout << "*** 함수와 함수 객체.4 ***" << endl;
-	// 4개의 요소를 갖는 벡터 생성
-	vector <int> vec4;
-	vec4.push_back(24);
-	vec4.push_back(42);
-	vec4.push_back(73);
-	vec4.push_back(92);
-
-	// 함수에 대한 포인터로 요소 출력
+	cout << "원본 벡터의 값" << endl;
 	for_each(vec4.begin(), vec4.end(), intPrint);
 	cout << endl;
 
-	// 모든 요소의 부호를 반전하고 출력
-	transform(vec4.begin(), vec4.end(), vec4.begin(), negate<int>());
+	cout << "벡터 내부에 있는 10의 개수 = ";
+	cout << count(vec4.begin(), vec4.end(), 10);		// count: 인자로 전달한 값과 동일한 요소수를 셈
+	cout << endl;
+
+	cout << "벡터 내부에 있는 짝수의 개수 = ";
+	cout << count_if(vec4.begin(), vec4.end(), isEven);	// count_if: 인자로 전달한 함수 포인터가 true를 리턴하면 요소수를 셈
+	cout << endl;
+
+	cout << "벡터 내부의 요소에 2 곱하기" << endl;
+	for_each(vec4.begin(), vec4.end(), timesTwo);		// for_each: 인자로 전달한 함수 포인터가 무언가를 리턴하면 요소를 변경
 	for_each(vec4.begin(), vec4.end(), intPrint);
+	cout << endl << endl;
+
+
+	/////////////////////////////////////////////////
+	///// 변경 알고리즘.1
+	/////////////////////////////////////////////////
+	cout << "*** 변경 알고리즘.1 ***" << endl;
+	vector <int> vec5;
+	vec5.push_back(10);
+	vec5.push_back(20);
+	vec5.push_back(30);
+
+	cout << "원본 벡터의 값" << endl;
+	for_each(vec5.begin(), vec5.end(), intPrint);
+	cout << endl;
+
+	cout << "반전한 벡터" << endl;
+	reverse(vec5.begin(), vec5.end()); // reverse(): 컨테이너 순서를 반전
+	for_each(vec5.begin(), vec5.end(), intPrint);
+	cout << endl;
+
+	cout << "회전한 벡터" << endl;
+	rotate(vec5.begin(), vec5.begin() + 2, vec5.end()); // rotate(): 첫 요소를 마지막으로 옮겨서 회전
+	for_each(vec5.begin(), vec5.end(), intPrint);
+	cout << endl;
+
+	cout << "셔플한 벡터" << endl;
+	random_shuffle(vec5.begin(), vec5.end()); // random_shuffle(): 임의의 순서로 요소를 정렬
+	for_each(vec5.begin(), vec5.end(), intPrint);
+	cout << endl << endl;
+
+
+	/////////////////////////////////////////////////
+	///// 정렬 알고리즘.1: Sort
+	/////////////////////////////////////////////////
+	cout << "*** 정렬 알고리즘.1: Sort ***" << endl;
+	vector <int> vec6;
+	vec6.push_back(10);
+	vec6.push_back(30);
+	vec6.push_back(20);
+
+	cout << "원본 벡터의 값" << endl;
+	for_each(vec6.begin(), vec6.end(), intPrint);
+	cout << endl;
+
+	cout << "오름차순 정렬" << endl;
+	sort(vec6.begin(), vec6.end());		// sort(): 정렬 함수 (디폴트: 오름차순)
+	for_each(vec6.begin(), vec6.end(), intPrint);
+	cout << endl;
+
+	cout << "내림차순 정렬" << endl;
+	sort(vec6.begin(), vec6.end(), greater <int>());	// greater<T>: 내림차순 함수 객체
+	for_each(vec6.begin(), vec6.end(), intPrint);
+	cout << endl << endl;
+
+
+	/////////////////////////////////////////////////
+	///// 정렬 알고리즘.2: binary_search (정렬되어 있는 컨테이너에 적용할 수 있는 알고리즘)
+	/////////////////////////////////////////////////
+	cout << "*** 정렬 알고리즘.2: binary_search ***" << endl;
+	vector <int> vec7;
+	vec7.push_back(10);
+	vec7.push_back(30);
+	vec7.push_back(20);
+
+	sort(vec7.begin(), vec7.end());
+
+	cout << "10 탐색 결과 = " << boolalpha;
+	cout << binary_search(vec7.begin(), vec7.end(), 10) << endl; // binary_search(): 요소를 찿음
+	cout << "40 탐색 결과 = " << boolalpha;
+	cout << binary_search(vec7.begin(), vec7.end(), 40) << endl << endl;
+
+
+	/////////////////////////////////////////////////
+	///// 정렬 알고리즘.3: 합집합
+	/////////////////////////////////////////////////
+	cout << "*** 정렬 알고리즘.3: ***" << endl;
+	// 세트는 처음 생성될때 비어있으므로, 세트만으로 구현할 수 없음, 따라서 결과를 일시적으로 저장하는 벡터를 만든뒤, 세트에 복사
+	// 첫 번째 세트(집합) 생성
+	set<int> set_1st;
+	set_1st.insert(10);
+	set_1st.insert(20);
+	cout << "첫 번째 세트의 요소" << endl;
+	for_each(set_1st.begin(), set_1st.end(), intPrint);
+	cout << endl;
+
+	// 두 번째 세트(집합) 생성
+	set<int> set_2nd;
+	set_2nd.insert(20);
+	set_2nd.insert(30);
+	cout << "두 번째 세트의 요소" << endl;
+	for_each(set_2nd.begin(), set_2nd.end(), intPrint);
+	cout << endl;
+
+	// 합집합 구하고 벡터에 저장
+	vector<int> temp(10);
+	vector<int>::iterator startIter;
+	vector<int>::iterator endIter;
+	endIter = set_union(set_1st.begin(), set_1st.end(), set_2nd.begin(), // set_union(): 합집합
+		set_2nd.end(), temp.begin());
+
+	// 벡터에서 결과 세트로 요소 복사
+	set<int> set_result;
+	for (startIter = temp.begin(); startIter != endIter; startIter++)
+	{
+		set_result.insert(*startIter);
+	}
+
+	cout << "결과 세트의 요소" << endl;
+	for_each(set_result.begin(), set_result.end(), intPrint);
+	cout << endl << endl;
+
+
+	/////////////////////////////////////////////////
+	///// 수치 알고리즘.1
+	/////////////////////////////////////////////////
+	cout << "*** 수치 알고리즘.1: ***" << endl;
+	// 벡터 인스턴스화하고 출력
+	vector<int> vec8;
+	vec8.push_back(10);
+	vec8.push_back(20);
+	vec8.push_back(30);
+
+	cout << "원본 벡터의 값" << endl;
+	for_each(vec8.begin(), vec8.end(), intPrint);
+	cout << endl;
+	// accumulate():	T accumulate(InIter first, InIter second, T init)
+	//					first, second 범위에 있는 숫자의 합을 구하고, init과 더해서 리턴
+	int sum = accumulate(vec8.begin(), vec8.end(), 0);
+	cout << "합계 = " << sum << endl;
 
 	return 0; // 소멸자 호출
 }
