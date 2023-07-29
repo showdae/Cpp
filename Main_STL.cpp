@@ -561,13 +561,13 @@ int main()
 	//			 반복자로 범위 지정, 마지막 매개변수에 함수에 대한 포인터를 지정
 	//			 범위 내부에 있는 요소들에 함수를 적용
 	//			 intPrint() 함수는 반복자가 가리키는 대상(*iterator)의 자료형을 파라메타로 받음
-	for_each(vec3.begin(), vec3.end(), intPrint); // 함수 포인터로 요소 출력
+	for_each(vec3.begin(), vec3.end(), intPrint); // 함수 포인터
 
 	// transform:	STL 알고리즘, transform() 함수에서 내부적으로 negate 객체를 호출
 	//				transform(inIter first, inIter second, outIter start, oper);
 	//				first와 second 사이의 요소에 oper 함수를 적용하고, 리턴된 결과를 start 위치부터 씀
 	// negate:		STL 함수객체, (-) 음수 연산자 함수 객체	
-	transform(vec3.begin(), vec3.end(), vec3.begin(), negate<int>()); // 요소들의 음수화
+	transform(vec3.begin(), vec3.end(), vec3.begin(), negate<int>()); // 함수 객체 (요소들의 음수화)
 	for_each(vec3.begin(), vec3.end(), intPrint);
 	cout << endl << endl;
 
