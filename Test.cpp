@@ -21,37 +21,30 @@
 
 #include <iostream>
 #include <vector>
-#include <algorithm>
-#include <numeric>
+#include <deque>
+#include <list>
+#include <stack>
+#include <queue>
+#include <time.h>
+#include <set>
+#include <map>
+#include <sstream>
 
 using namespace std;
 
-int myMinus(int a, int b)
+int main()
 {
-	return a - b;
-}
-
-void myPrint(int val)
-{
-	printf("%d\n", val);
-}
-
-int main() {
-	vector<int> vec(10);
-	vector<int>::iterator iter;
-	vector<int>::reverse_iterator rIter;
-
-	vec.push_back(11);
-
-	for (int i = 0; i < 10; i++)
+	string str("asd asd zxc");
+	map<string, int> strcopy;
+	string token;
+	stringstream ss(str);
+	
+	while (getline(ss, token, ' '))
 	{
-		vec.at(i) = i + 1;
+		cout << token << endl;
+		++strcopy[token];
 	}
 
-	for (iter = vec.begin(); iter != vec.end(); ++iter)
-	{
-		cout << *iter << endl;
-	}
 
 	return 0;
 }
