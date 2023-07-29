@@ -673,7 +673,7 @@ int main()
 	///// 정렬 알고리즘.3: 합집합
 	/////////////////////////////////////////////////
 	cout << "*** 정렬 알고리즘.3: ***" << endl;
-	// 세트는 처음 생성될때 비어있으므로, 세트만으로 구현할 수 없음, 따라서 결과를 일시적으로 저장하는 벡터를 만든뒤, 세트에 복사
+
 	// 첫 번째 세트(집합) 생성
 	set<int> set_1st;
 	set_1st.insert(10);
@@ -690,6 +690,8 @@ int main()
 	for_each(set_2nd.begin(), set_2nd.end(), intPrint);
 	cout << endl;
 
+	// 세트는 처음 생성될때 비어있으므로, 세트만으로 구현할 수 없음,
+	// 따라서 결과를 일시적으로 저장하는 벡터를 만든뒤, 세트에 복사
 	// 합집합 구하고 벡터에 저장
 	vector<int> temp(10);
 	vector<int>::iterator startIter;
@@ -722,10 +724,14 @@ int main()
 	cout << "원본 벡터의 값" << endl;
 	for_each(vec8.begin(), vec8.end(), intPrint);
 	cout << endl;
+
 	// accumulate():	T accumulate(InIter first, InIter second, T init)
 	//					first, second 범위에 있는 숫자의 합을 구하고, init과 더해서 리턴
 	int sum = accumulate(vec8.begin(), vec8.end(), 0);
-	cout << "합계 = " << sum << endl;
+	cout << "누적합 = " << sum << endl;
+
+	int mul = accumulate(vec8.begin(), vec8.end(), 1, multiplies<int>());
+	cout << "누적곱 = " << mul << endl;
 
 	return 0; // 소멸자 호출
 }

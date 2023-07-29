@@ -20,9 +20,38 @@
 // 인라인 함수
 
 #include <iostream>
+#include <vector>
+#include <algorithm>
+#include <numeric>
 
 using namespace std;
 
-void main() {
+int myMinus(int a, int b)
+{
+	return a - b;
+}
 
+void myPrint(int val)
+{
+	printf("%d\n", val);
+}
+
+int main() {
+	vector<int> vec(10);
+	vector<int>::iterator iter;
+	vector<int>::reverse_iterator rIter;
+
+	vec.push_back(11);
+
+	for (int i = 0; i < 10; i++)
+	{
+		vec.at(i) = i + 1;
+	}
+
+	for (iter = vec.begin(); iter != vec.end(); ++iter)
+	{
+		cout << *iter << endl;
+	}
+
+	return 0;
 }
