@@ -62,7 +62,8 @@ int main()
 			case 2:
 				cout << "scissors" << endl;
 				break;
-			default: cout << "error" << endl;
+			default:
+				cout << "error" << endl;
 				break;
 		}
 	}
