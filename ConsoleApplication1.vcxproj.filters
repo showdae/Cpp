@@ -78,6 +78,9 @@
     <ClCompile Include="Set_STL.cpp">
       <Filter>STL</Filter>
     </ClCompile>
+    <ClCompile Include="Study.cpp">
+      <Filter>테스트</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Parent.h">

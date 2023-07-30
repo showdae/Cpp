@@ -84,10 +84,10 @@
 				count(), count_if(), find(), for_each()
 				InIter(입력 반복자)
 	 2) 변경:	컨테이너 구조 변경 
-				generate(), reverse(), rotate(), random_shuffle(), transform()
+				reverse(), rotate(), random_shuffle(), transform(), generate()
 				BdIter(양방향 반복자), FwIter(전방 반복자)
 	 3) 정렬:	컨테이너의 요소를 정렬
-				sort(), binary_search(), min_element(), max_element(), set_union()
+				sort(): 정렬, binary_search(): 탐색, set_union(): 합집합, set_intersection(): 교집합, min_element(), max_element()
 				less<T>: < (오름차순 함수 객체), greater<T>: > (내림차순 함수 객체)
 	 4) 수치:	숫자 요소에 수학 처리
 	*/
@@ -98,6 +98,7 @@
 #include <string>
 #include <utility>	// pair 구조체 정의
 #include <sstream>	// 문자열 스트림 (토큰화)
+#include <time.h>	// 랜덤값
 
 // 분할 구현 헤더
 #include "Doubly_List_STL.h"
@@ -618,11 +619,12 @@ int main()
 	cout << endl;
 
 	cout << "회전한 벡터" << endl;
-	rotate(vec5.begin(), vec5.begin() + 2, vec5.end()); // rotate(): 첫 요소를 마지막으로 옮겨서 회전
+	rotate(vec5.begin(), vec5.begin() + 1, vec5.end()); // rotate(): 첫 요소를 마지막으로 옮겨서 회전
 	for_each(vec5.begin(), vec5.end(), intPrint);
 	cout << endl;
 
 	cout << "셔플한 벡터" << endl;
+	srand(time(0));
 	random_shuffle(vec5.begin(), vec5.end()); // random_shuffle(): 임의의 순서로 요소를 정렬
 	for_each(vec5.begin(), vec5.end(), intPrint);
 	cout << endl << endl;
