@@ -25,6 +25,9 @@
     <Filter Include="STL">
       <UniqueIdentifier>{f8d89938-b427-4607-a9ef-e323292af18a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MIL">
+      <UniqueIdentifier>{96e86965-30ec-4ce2-a37b-6ef51bc782fa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Parent.cpp">
@@ -80,6 +83,9 @@
     </ClCompile>
     <ClCompile Include="Study.cpp">
       <Filter>테스트</Filter>
+    </ClCompile>
+    <ClCompile Include="chapter_1.cpp">
+      <Filter>MIL</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
